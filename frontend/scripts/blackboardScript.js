@@ -13,7 +13,21 @@ $(document).ready(function(){
 	}
 
 	function updateBlackboard(name, message) {
-		
+		$.ajax({
+			url: apiUrl + '/blackboard/' + name,
+			data: JSON.stringify({ "message": message}),
+			type: 'PATCH',
+			contentType : 'application/json',
+			// for incompatible browsers?
+			xhr: function() {
+		        return window.XMLHttpRequest == null || new window.XMLHttpRequest().addEventListener == null 
+		            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+		            : $.ajaxSettings.xhr();
+		    	},
+		    success: function(data) {
+		    	alert("Update was performed.")
+		    }
+		});
 	}
 
 	function clearBlackboard(name) {
