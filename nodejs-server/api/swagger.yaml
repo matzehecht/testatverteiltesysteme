@@ -176,7 +176,7 @@ components:
           maxLength: 32
           type: string
         message:
-          maxLength: 255
+          maxLength: 4096
           type: string
         timestamp:
           type: string
@@ -202,5 +202,5 @@ components:
       type: object
       properties:
         message:
-          maxLength: 255
+          maxLength: 4096
           type: string
