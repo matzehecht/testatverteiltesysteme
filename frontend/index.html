@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Blackboards</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheet/style.css">
+    <script type="text/javascript" src="scripts/blackboardScript.js"></script>
+</head>
+
+<body>
+    <div class="Titel">
+        Blackboards
+    </div>
+    <p id="BlackboardContainer">
+        <script type="text/javascript">
+            function listBlackboards(blackboardlist){
+                var container = document.getElementById("BlackboardContainer");
+                while(container.firstChild){
+                    container.firstChild.remove();
+                }
+
+                blackboardlist = JSON.parse(blackboardlist);
+                //Aufbau JSON
+                /*
+                Name
+                Message
+                Timestamp
+                */
+                for(var i = 0; i < blackboardlist; i++){
+                    //Einfügen Div: Blackboard
+                    var blackboard = document.createElement("div");
+                    blackboard.id = "blackboard" + i;
+                    blackboard.className = "Blackboard";
+
+                    //Einfügen Div: Namen
+                    var nameDiv = document.createElement("div");
+                    nameDiv.className = "NameDiv";
+                    var name = document.createTextNode(blackboardlist[i]["name"]);
+                    nameDiv.appendChild(name);
+                    nameDiv.onclick = function(){
+                        expandDivToDetail(this.id)
+                    };
+                    blackboard.appendChild(nameDiv);
+
+                    //Einfügen Div: Vorschau Nachricht 
+                    var messageDiv = document.createElement("div");
+                    messageDiv.className = "MessageDiv";
+                    var message = document.createTextNode(blackboardlist[i]["message"]);
+                    messageDiv.appendChild(message);
+                    blackboard.appendChild(messageDiv);
+
+                    //Blackboard Div an Container anhängen
+                    document.getElementById("BlackboardContainer").appendChild(blackboard);
+                }
+            }
+            getBlackboards(listBlackboards);
+        </script>
+    </p>
+    <div class="Add">
+        +
+    </div>
+</body>
+
+</html>
