@@ -1,0 +1,206 @@
+openapi: 3.0.1
+info:
+  title: Verteiltes Blackboard
+  description: Webserver, der Dienste zum Erstellen und Löschen von Blackboards, sowie
+    zum Schreiben und Lesen von Nachrichten auf jenen “Blackboards bereitstellt.
+  version: 1.0.0
+servers:
+- url: http://{hostname}:{port}/api
+  variables:
+    hostname:
+      default: localhost
+    port:
+      default: "8080"
+tags:
+- name: blackboard
+  description: Information and operations on the blackboards
+paths:
+  /blackboard:
+    get:
+      tags:
+      - blackboard
+      summary: get all existing blackboards
+      operationId: listBlackboards
+      responses:
+        200:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      x-swagger-router-controller: Blackboard
+  /blackboard/{name}:
+    get:
+      tags:
+      - blackboard
+      summary: read message from a blackboard
+      operationId: readBlackboard
+      parameters:
+      - name: name
+        in: path
+        description: Name of the blackboard to be read
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maxLength: 32
+          minLength: 1
+          type: string
+      - name: format
+        in: query
+        description: if set to 'status', return blackboard status
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Blackboard'
+                - $ref: '#/components/schemas/BlackboardStatus'
+                x-content-type: application/json
+        400:
+          description: Bad request. Wrong parameters supplied.
+        404:
+          description: Not found. Not exisiting blackboard name supplied.
+      x-swagger-router-controller: Blackboard
+    put:
+      tags:
+      - blackboard
+      summary: create a new blackboard
+      operationId: createBlackboard
+      parameters:
+      - name: name
+        in: path
+        description: Name of the new blackboard
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maxLength: 32
+          minLength: 1
+          type: string
+      responses:
+        201:
+          description: Blackboard created
+          links:
+            UpdateBlackboardByName:
+              operationId: updateBlackboard
+              parameters:
+                name: $request.path.name
+              description: The name value from the path parameter can be used as path
+                parameter in PATCH /blackboard/{name}
+            ReadBlackboardByName:
+              operationId: readBlackboard
+              parameters:
+                name: $request.path.name
+              description: The name value from the path parameter can be used as path
+                parameter in GET /blackboard/{name}
+        400:
+          description: Bad request. Wrong parameter supplied.
+        409:
+          description: Conflict. Blackboard already exists.
+        507:
+          description: Insufficient Storage. Maximum number of blackboards already
+            reached.
+      x-swagger-router-controller: Blackboard
+    delete:
+      tags:
+      - blackboard
+      summary: delete a blackboard
+      operationId: deleteBlackboard
+      parameters:
+      - name: name
+        in: path
+        description: Name of the blackboard to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maxLength: 32
+          minLength: 1
+          type: string
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found. Not exisiting blackboard name supplied.
+      x-swagger-router-controller: Blackboard
+    patch:
+      tags:
+      - blackboard
+      summary: update message from an exisiting blackboard
+      operationId: updateBlackboard
+      parameters:
+      - name: name
+        in: path
+        description: Name of the blackboard to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maxLength: 32
+          minLength: 1
+          type: string
+      requestBody:
+        description: Message to be written to the blackboard
+        x-name: blackboard
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        200:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blackboard'
+        400:
+          description: Bad request. Wrong parameter supplied.
+        404:
+          description: Not found. Not exisiting blackboard name supplied.
+      x-swagger-router-controller: Blackboard
+components:
+  schemas:
+    Blackboard:
+      type: object
+      properties:
+        name:
+          maxLength: 32
+          type: string
+        message:
+          maxLength: 255
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    BlackboardStatus:
+      type: object
+      properties:
+        name:
+          type: string
+        empty:
+          type: boolean
+        timestamp:
+          type: string
+          format: date-time
+    inline_response_200:
+      type: object
+      properties:
+        blackboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Blackboard'
+    body:
+      type: object
+      properties:
+        message:
+          maxLength: 255
+          type: string
