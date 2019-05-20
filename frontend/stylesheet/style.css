@@ -1,0 +1,21 @@
+body{
+	background-color: #111111;
+}
+
+.Titel {
+	text-align: center;
+	color: #F81919;
+	font-size: 10vh;
+}
+.Add {
+	position:absolute;
+    bottom:0;
+    right:0;
+	margin-right:2vh;
+	margin-bottom: 1.5vh;
+}
+
+.Add:hover {
+	transform: scale(1.1);
+	
+}
