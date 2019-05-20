@@ -2,7 +2,14 @@ $(document).ready(function(){
     var apiUrl = "http://localhost:8080/api"
 
 	function createBlackboard(name) {
-
+		$.ajax({
+			url: apiUrl + '/blackboard/' + name,
+			type: 'PUT',
+			data: "",
+			success: function(data) {
+			alert('Load was performed.');
+			}
+		});
 	}
 
 	function updateBlackboard(name, message) {
