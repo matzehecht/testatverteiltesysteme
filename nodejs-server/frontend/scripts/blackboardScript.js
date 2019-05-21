@@ -67,7 +67,7 @@
 			dataType: 'json',
 			success: function() {
 				alert("Blackboard " + name + " gelöscht");
-			}
+			},
 			type: 'DELETE'
 		})
 	}
