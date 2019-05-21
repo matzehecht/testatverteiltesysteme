@@ -7,21 +7,29 @@ body{
 	height: 20vh;
 	background-color: #0A0A0A;
 	#box-shadow: 0.3vh 0.3vh #888888;
-	box-shadow: 0 0.7vh 2vh 0 rgba(255, 255, 255, 0.7), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+	box-shadow: 0 0.7vh 2vh 0 rgba(255, 255, 255, 0.7);
 	border-radius: 1vh;
+	transition: box-shadow .15s;
+	
+}
+.Blackboard:hover {
+	box-shadow: 0 0.2vh 0.7vh 0 rgba(255, 255, 255, 0.7);
 }
 .BlackboardContainer {
 	width: 100%;
 	height: 80vh;
 	#background-color: #888811;
     display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
 	
 }
 .blackboardHeader {
 	font-size: 4vh;
 	border-radius: 1vh;
 	text-align: center;
-	color: #00EE00 ;
+	color: #F81919 ;
 	padding: 0.5vh;
 	
 }
@@ -29,7 +37,7 @@ body{
 .blackboardText {
 	font-size: 2vh;
 	border-radius: 1vh;
-	color: #00EE00 ;
+	color: #F81919 ;
 	padding: 0.5vh;
 }
 

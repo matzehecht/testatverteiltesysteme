@@ -15,64 +15,7 @@
     <div class="Titel">
         Blackboards
     </div>
-    <div class="BlackboardContainer">
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		<div class="Blackboard">
-			<div class="blackboardHeader">
-				Blackboard1
-			</div>
-			<div class="blackboardText">
-				Dies ist ein text...
-			</div>
-        </div>
-		BlackboardContainer
+    <div class="BlackboardContainer" id="BlackboardContainer">
         <script type="text/javascript">
             function listBlackboards(blackboardlist){
                 var container = document.getElementById("BlackboardContainer");
@@ -101,7 +44,7 @@
 
                     //Einfügen Div: Namen
                     var nameDiv = document.createElement("div");
-                    nameDiv.className = "NameDiv";
+                    nameDiv.className = "blackboardHeader";
                     var name = document.createTextNode(blackboardlist.blackboards[i].name);
                     nameDiv.appendChild(name);
                     nameDiv.onclick = function(){
@@ -111,7 +54,7 @@
 
                     //Einfügen Div: Vorschau Nachricht 
                     var messageDiv = document.createElement("div");
-                    messageDiv.className = "MessageDiv";
+                    messageDiv.className = "blackboardText";
                     var message = document.createTextNode(blackboardlist.blackboards[i].message);
                     messageDiv.appendChild(message);
                     blackboard.appendChild(messageDiv);
