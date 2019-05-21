@@ -5,6 +5,9 @@ var maxBlackboardName = 32;
 var maxBlackboards = 255;
 var maxMessage = 4096;
 
+blackboards.push({"name": "Wurscht", "message": "mit Senf", "timestamp": Date.now()});
+blackboards.push({"name": "Jacke", "message": "ein relativ langer Text mit vielen Wörtern, damit viele Zeichen überschritten werden und man den Text am Ende mit Punkt Punkt Punkt abkürzen kann. Danke. Bitte.", "timestamp": Date.now()});
+
 /**
  * create a new blackboard
  *
