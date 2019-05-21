@@ -80,23 +80,29 @@
                     container.firstChild.remove();
                 }
 
-                blackboardlist = JSON.parse(blackboardlist);
+                //blackboardlist = JSON.parse(blackboardlist);
                 //Aufbau JSON
                 /*
                 Name
                 Message
                 Timestamp
                 */
-                for(var i = 0; i < blackboardlist; i++){
+                var numberBoards = 0;
+                for(var boards in blackboardlist.blackboards){
+                    if(blackboardlist.blackboards.hasOwnProperty(boards)){
+                        numberBoards++;
+                    }
+                }
+                for(var i = 0; i < numberBoards; i++){
                     //Einfügen Div: Blackboard
                     var blackboard = document.createElement("div");
-                    blackboard.id = "blackboard" + i;
+                    blackboard.id = "blackboards" + i;
                     blackboard.className = "Blackboard";
 
                     //Einfügen Div: Namen
                     var nameDiv = document.createElement("div");
                     nameDiv.className = "NameDiv";
-                    var name = document.createTextNode(blackboardlist[i]["name"]);
+                    var name = document.createTextNode(blackboardlist.blackboards[i].name);
                     nameDiv.appendChild(name);
                     nameDiv.onclick = function(){
                         expandDivToDetail(this.id)
@@ -106,7 +112,7 @@
                     //Einfügen Div: Vorschau Nachricht 
                     var messageDiv = document.createElement("div");
                     messageDiv.className = "MessageDiv";
-                    var message = document.createTextNode(blackboardlist[i]["message"]);
+                    var message = document.createTextNode(blackboardlist.blackboards[i].message);
                     messageDiv.appendChild(message);
                     blackboard.appendChild(messageDiv);
 
