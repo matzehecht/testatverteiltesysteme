@@ -1,4 +1,3 @@
-$(document).ready(function(){
     var apiUrl = "http://localhost:8080/api"
 
 	function createBlackboard(name) {
@@ -42,15 +41,12 @@ $(document).ready(function(){
 		
 	}
 
-	function getBlackboards(handler, errorHandler) {
+	function getBlackboards(handler, errorHandler = function(){}) {
 		$.ajax({
 			url: apiUrl + '/blackboard',
-			data: {
-				format: 'json'
-			},
 			error: errorHandler(),
-			dataType: 'jsonp',
-			success: handler(data),
+			dataType: 'json',
+			success: handler,
 			type: 'GET'
 		});
 	}
@@ -58,4 +54,3 @@ $(document).ready(function(){
 	function deleteBlackboard(name) {
 		
 	}
-});
