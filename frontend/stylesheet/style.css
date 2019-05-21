@@ -1,6 +1,37 @@
 body{
 	background-color: #111111;
 }
+.Blackboard {
+	margin: 1vh;
+	width: 20%;
+	height: 20vh;
+	background-color: #0A0A0A;
+	#box-shadow: 0.3vh 0.3vh #888888;
+	box-shadow: 0 0.7vh 2vh 0 rgba(255, 255, 255, 0.7), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+	border-radius: 1vh;
+}
+.BlackboardContainer {
+	width: 100%;
+	height: 80vh;
+	#background-color: #888811;
+    display: flex;
+	
+}
+.blackboardHeader {
+	font-size: 4vh;
+	border-radius: 1vh;
+	text-align: center;
+	color: #00EE00 ;
+	padding: 0.5vh;
+	
+}
+
+.blackboardText {
+	font-size: 2vh;
+	border-radius: 1vh;
+	color: #00EE00 ;
+	padding: 0.5vh;
+}
 
 .Titel {
 	text-align: center;
