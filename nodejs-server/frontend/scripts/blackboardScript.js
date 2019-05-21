@@ -33,12 +33,22 @@
 		updateBlackboard(name, "");
 	}
 
-	function readBlackboard(name) {
-
+	function readBlackboard(name, handler) {
+		$ajax({
+			url: apiUrl + '/blackboard/' + name,
+			dataType: 'json',
+			success: handler,
+			type: 'GET'
+		});
 	}
 
-	function getBlackboardStatus(name) {
-		
+	function getBlackboardStatus(name, handler) {
+		$.ajax({
+			url: apiUrl + '/blackboard/' + name + '?format=status',
+			dataType: 'json',
+			success: handler,
+			type: 'GET'
+		});
 	}
 
 	function getBlackboards(handler, errorHandler = function(){}) {
@@ -52,5 +62,12 @@
 	}
 
 	function deleteBlackboard(name) {
-		
+		$.ajax({
+			url: apiUrl + '/blackboard/' + name,
+			dataType: 'json',
+			success: function() {
+				alert("Blackboard " + name + " gelöscht");
+			}
+			type: 'DELETE'
+		})
 	}
