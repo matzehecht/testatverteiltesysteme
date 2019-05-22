@@ -12,6 +12,7 @@
 	}
 
 	function updateBlackboard(name, message) {
+		//ajax request
 		$.ajax({
 			url: apiUrl + '/blackboard/' + name,
 			data: JSON.stringify({ "message": message}),
@@ -24,7 +25,7 @@
 		            : $.ajaxSettings.xhr();
 		    	},
 		    success: function(data) {
-		    	alert("Update was performed.")
+					alert("Update was performed.")
 		    }
 		});
 	}
@@ -33,12 +34,27 @@
 		updateBlackboard(name, "");
 	}
 
-	function readBlackboard(name, handler) {
-		$ajax({
+	function readBlackboard(name, boardId) {
+		$.ajax({
 			url: apiUrl + '/blackboard/' + name,
 			dataType: 'json',
-			success: handler,
-			type: 'GET'
+			type: 'GET',
+			success: function(data){
+				//change style of board in foreground by setting new css class
+				var board = document.getElementById(boardId);
+
+				//loop childnodes
+				for (var i = 0; i < board.childNodes.length; i++) {
+					//change text according to received message
+					if(board.childNodes[i].className == "blackboardText"){
+						board.childNodes[i].textContent = data.message;
+					}
+					//display buttons
+					if (board.childNodes[i].className == "blackboardButton") {
+					  board.childNodes[i].style.display = 'inline-flex';
+					}        
+				}
+			}
 		});
 	}
 

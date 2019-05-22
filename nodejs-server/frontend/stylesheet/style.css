@@ -10,11 +10,23 @@ body{
 	box-shadow: 0 0.7vh 2vh 0 rgba(255, 255, 255, 0.7);
 	border-radius: 1vh;
 	transition: box-shadow .15s;
-	
 }
+
 .Blackboard:hover {
 	box-shadow: 0 0.2vh 0.7vh 0 rgba(255, 255, 255, 0.7);
 }
+
+.ForegroundBoard {
+	margin: 1vh;
+	width: 30%;
+	height: 40vh;
+	background-color: rgb(88, 87, 87);
+	#box-shadow: 0.3vh 0.3vh #888888;
+	box-shadow: 0 0.7vh 2vh 0 rgba(255, 255, 255, 0.7);
+	border-radius: 1vh;
+	transition: box-shadow .15s;
+}
+
 .BlackboardContainer {
 	width: 100%;
 	height: 80vh;
@@ -37,6 +49,13 @@ body{
 .blackboardText {
 	font-size: 2vh;
 	border-radius: 1vh;
+	color: #F81919 ;
+	padding: 0.5vh;
+}
+
+.blackboardButton {
+	display: none;
+	align-self: flex-end;
 	color: #F81919 ;
 	padding: 0.5vh;
 }

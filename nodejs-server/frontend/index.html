@@ -37,27 +37,120 @@
                     }
                 }
                 for(var i = 0; i < numberBoards; i++){
-                    //Einfügen Div: Blackboard
+                    //Create Div: Blackboard
                     var blackboard = document.createElement("div");
                     blackboard.id = "blackboards" + i;
                     blackboard.className = "Blackboard";
 
-                    //Einfügen Div: Namen
-                    var nameDiv = document.createElement("div");
-                    nameDiv.className = "blackboardHeader";
-                    var name = document.createTextNode(blackboardlist.blackboards[i].name);
-                    nameDiv.appendChild(name);
-                    nameDiv.onclick = function(){
-                        expandDivToDetail(this.id)
-                    };
-                    blackboard.appendChild(nameDiv);
-
-                    //Einfügen Div: Vorschau Nachricht 
+                    //Create Div: Vorschau Nachricht 
                     var messageDiv = document.createElement("div");
                     messageDiv.className = "blackboardText";
-                    var message = document.createTextNode(blackboardlist.blackboards[i].message);
-                    messageDiv.appendChild(message);
+                    
+                    //enbale change of text of message div
+                    messageDiv.contentEditable = "true";                
+
+                    //get message
+                    var message = blackboardlist.blackboards[i].message;
+                    var previewMessage;
+
+                    //check if message is longer than 20 characters
+                    if(message.length > 20){
+                        //save original message for later usage in detailed view
+                        var origMessage = message;
+
+                        //truncat string to shorter preview message
+                        var index = message.indexOf(' ', message.indexOf(' ') +1);
+                        var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
+                        var endDots = '...';
+                        previewMessage = document.createTextNode(previewString + endDots);
+                    } else{
+                        previewMessage = document.createTextNode(message);
+                    }
+                    messageDiv.appendChild(previewMessage);
+
+                    //Create Div: Namen
+                    var nameDiv = document.createElement("div");
+                    nameDiv.className = "blackboardHeader";
+                    nameDiv.id = blackboard.id + "nameDiv";
+                    
+                    //get name of board
+                    var boardName = blackboardlist.blackboards[i].name;
+                    var nameNode = document.createTextNode(boardName);
+                    nameDiv.appendChild(nameNode);
+                    
+                    //Append Divs
+                    blackboard.appendChild(nameDiv);
                     blackboard.appendChild(messageDiv);
+
+                    //define on click for blackbaord
+                    blackboard.onclick = function(){
+                        var board = document.getElementById(this.id);
+                        board.setAttribute("class", "ForegroundBoard");
+                        var name = board.firstChild.textContent;
+                        readBlackboard(name, this.id);
+                    };
+
+                    //add buttons
+                    var buttonSave = document.createElement("BUTTON");
+                    var buttonClear = document.createElement("BUTTON");
+                    var buttonDelete = document.createElement("BUTTON");
+                    var buttonClose = document.createElement("BUTTON");
+
+                    buttonSave.innerText = "Save";
+                    buttonClear.innerText = "Clear";
+                    buttonDelete.innerText = "Delete";
+                    buttonClose.innerText = "Close";
+
+                    buttonSave.className = "blackboardButton";
+                    buttonClear.className = "blackboardButton";
+                    buttonDelete.className = "blackboardButton";
+                    buttonClose.className = "blackboardButton";
+
+                    buttonSave.id = blackboard.id + "saveButton";
+                    buttonClear.id = blackboard.id + "clearButton";
+                    buttonDelete.id = blackboard.id + "deleteButton";
+                    buttonClose.id = blackboard.id + "closeButton";
+
+
+                    buttonSave.onclick = function(){
+                        event.stopPropagation(); //-> used to not trigger blackboards on click method
+                        var thisButton = document.getElementById(this.id);
+                        var board = thisButton.parentElement;
+
+                        var name = board.firstChild.textContent;
+                        for (var i = 0; i < board.childNodes.length; i++) {
+                            if(board.childNodes[i].className == "blackboardText"){
+                                message = board.childNodes[i].textContent;
+                            }
+                        }
+                        updateBlackboard(name, message);
+                    }
+                    buttonClear.onclick = function(){
+                        event.stopPropagation(); //-> used to not trigger blackboards on click method
+                        var thisButton = document.getElementById(this.id);
+                        var board = thisButton.parentElement;
+
+                        var name = board.firstChild.textContent;
+                        clearBlackboard(name);
+                    }
+                    buttonClose.onclick = function(){
+                        event.stopPropagation(); //-> used to not trigger blackboards on click method
+                        var thisButton = document.getElementById(this.id);
+                        var board = thisButton.parentElement;
+                        board.setAttribute("class", "Blackboard");
+                        
+                        for (var i = 0; i < board.childNodes.length; i++) {
+                            //hide buttons
+                            if (board.childNodes[i].className == "blackboardButton") {
+                                board.childNodes[i].style.display = 'none';
+                            } 
+                        }
+                    }
+                    //apend buttons to blackboard but deactivate them
+                    blackboard.appendChild(buttonSave);
+                    blackboard.appendChild(buttonClear);
+                    blackboard.appendChild(buttonDelete);
+                    blackboard.appendChild(buttonClose);
 
                     //Blackboard Div an Container anhängen
                     document.getElementById("BlackboardContainer").appendChild(blackboard);
