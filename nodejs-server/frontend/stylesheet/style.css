@@ -10,7 +10,6 @@ body{
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
-	
 }
 
 .Blackboard {
@@ -37,6 +36,7 @@ body{
 	background-color: rgb(163, 23, 23);
 	#box-shadow: 0.3vh 0.3vh #888888;
 	box-shadow: 0vh 0vh 0.5vh 0.5vh rgba(255, 255, 255, 0.7);
+	transition: all .3s ease-in-out;
 }
 
 .blackboardHeader {
