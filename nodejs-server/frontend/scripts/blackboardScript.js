@@ -6,7 +6,6 @@
 			type: 'PUT',
 			data: "",
 			success: function(data) {
-			alert('Load was performed.');
 			}
 		});
 	}
@@ -25,7 +24,6 @@
 		            : $.ajaxSettings.xhr();
 		    	},
 		    success: function(data) {
-					alert("Update was performed.")
 		    }
 		});
 	}
