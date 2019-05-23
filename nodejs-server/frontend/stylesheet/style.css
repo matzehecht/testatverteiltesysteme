@@ -74,6 +74,7 @@ body{
     right:0.5vh;
 	margin-right:2vh;
 	margin-bottom: 1.5vh;
+	cursor: pointer;
 }
 
 .Add:hover {
