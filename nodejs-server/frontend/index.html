@@ -174,11 +174,13 @@
 				var blackboardTitle = document.getElementById("title").value;
 				console.log("dies ist ein test");
 				createBlackboard(blackboardTitle);
+				getBlackboards(listBlackboards);
+				document.getElementById("myForm").style.display = "none";
 			}
 		</script>
     </div>
-	<div class="form-popup" id="myForm">
-		<form class="form-container">
+	<div class="popup popup-container" id="myForm">
+		
 			<h1>Create Blackboard</h1>
 
 			<label for="name"><b>Name</b></label>
@@ -186,7 +188,7 @@
 
 			<button type="submit" class="btn" onclick="createBlackboards()">Submit</button>
 			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-		</form>
+		
 	</div>
 </body>
 
