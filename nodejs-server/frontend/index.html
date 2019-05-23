@@ -55,8 +55,6 @@
 
                     //check if message is longer than 20 characters
                     if(message.length > 20){
-                        //save original message for later usage in detailed view
-                        var origMessage = message;
 
                         //truncat string to shorter preview message
                         var index = message.indexOf(' ', message.indexOf(' ') +1);
@@ -168,7 +166,21 @@
                             }
                             if (board.childNodes[i].className == "buttonContainer") {
                                 board.childNodes[i].style.display = 'none';
-                            } 
+                            }
+                            if(board.childNodes[i].className == "blackboardText"){
+                                message = board.childNodes[i].textContent;
+                                
+                                //check if message is longer than 20 characters
+                                if(message.length > 20){
+                                    //truncat string to shorter preview message
+                                    var index = message.indexOf(' ', message.indexOf(' ') +1);
+                                    var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
+                                    var endDots = '...';
+                                    board.childNodes[i].textContent = previewString + endDots;
+                                } else{
+                                    board.childNodes[i].textContent = message;
+                                }
+					        }
                         }
                     }
                     //apend buttons to blackboard but deactivate them
