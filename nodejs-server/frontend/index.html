@@ -159,9 +159,35 @@
             getBlackboards(listBlackboards);
         </script>
     </div>
-    <div class="Add">
+    <div class="Add" id="addBlackboardIcon" onclick="openForm()">
         <img src="Rotes_Plus.png" alt="Add Blackboard" width="40vh" height="40vh">
+		<script type="text/javascript">
+			function openForm() {
+			    document.getElementById("myForm").style.display = "block";
+			}
+
+			function closeForm() {
+			    document.getElementById("myForm").style.display = "none";
+			}
+			
+			function createBlackboards() {
+				var blackboardTitle = document.getElementById("title").value;
+				console.log("dies ist ein test");
+				createBlackboard(blackboardTitle);
+			}
+		</script>
     </div>
+	<div class="form-popup" id="myForm">
+		<form class="form-container">
+			<h1>Create Blackboard</h1>
+
+			<label for="name"><b>Name</b></label>
+			<input id="title" type="text" placeholder="Enter Blackboard Name" name="name" required>
+
+			<button type="submit" class="btn" onclick="createBlackboards()">Submit</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+		</form>
+	</div>
 </body>
 
 </html>
