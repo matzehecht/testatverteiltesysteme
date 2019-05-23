@@ -48,6 +48,9 @@
 						board.childNodes[i].textContent = data.message;
 					}
 					//display buttons
+					if (board.childNodes[i].className == "buttonContainer") {
+					  board.childNodes[i].style.display = 'inline-flex';
+					}
 					if (board.childNodes[i].className == "blackboardButton") {
 					  board.childNodes[i].style.display = 'inline-flex';
 					}        

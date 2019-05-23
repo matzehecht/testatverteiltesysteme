@@ -91,6 +91,10 @@
                     };
 
                     //add buttons
+                    var buttonContainer = document.createElement("div");
+                    buttonContainer.className = "buttonContainer";
+
+
                     var buttonSave = document.createElement("BUTTON");
                     var buttonClear = document.createElement("BUTTON");
                     var buttonDelete = document.createElement("BUTTON");
@@ -115,7 +119,8 @@
                     buttonSave.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
-                        var board = thisButton.parentElement;
+                        var buttoncontainer = thisButton.parentElement;
+                        var board = buttoncontainer.parentElement;
 
                         var name = board.firstChild.textContent;
                         for (var i = 0; i < board.childNodes.length; i++) {
@@ -128,7 +133,8 @@
                     buttonClear.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
-                        var board = thisButton.parentElement;
+                        var buttoncontainer = thisButton.parentElement;
+                        var board = buttoncontainer.parentElement;
 
                         var name = board.firstChild.textContent;
                         for (var i = 0; i < board.childNodes.length; i++) {
@@ -141,7 +147,8 @@
                     buttonDelete.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
-                        var board = thisButton.parentElement;
+                        var buttoncontainer = thisButton.parentElement;
+                        var board = buttoncontainer.parentElement;
                         var name = board.firstChild.textContent;
 
                         deleteBlackboard(name);
@@ -150,22 +157,27 @@
                     buttonClose.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
-                        var board = thisButton.parentElement;
+                        var buttoncontainer = thisButton.parentElement;
+                        var board = buttoncontainer.parentElement;
                         board.setAttribute("class", "Blackboard");
                         
                         for (var i = 0; i < board.childNodes.length; i++) {
                             //hide buttons
                             if (board.childNodes[i].className == "blackboardButton") {
                                 board.childNodes[i].style.display = 'none';
+                            }
+                            if (board.childNodes[i].className == "buttonContainer") {
+                                board.childNodes[i].style.display = 'none';
                             } 
                         }
                     }
                     //apend buttons to blackboard but deactivate them
-                    blackboard.appendChild(buttonSave);
-                    blackboard.appendChild(buttonClear);
-                    blackboard.appendChild(buttonDelete);
-                    blackboard.appendChild(buttonClose);
+                    buttonContainer.appendChild(buttonSave);
+                    buttonContainer.appendChild(buttonClear);
+                    buttonContainer.appendChild(buttonDelete);
+                    buttonContainer.appendChild(buttonClose);
 
+                    blackboard.appendChild(buttonContainer);
                     //Blackboard Div an Container anhängen
                     document.getElementById("BlackboardContainer").appendChild(blackboard);
                 }
