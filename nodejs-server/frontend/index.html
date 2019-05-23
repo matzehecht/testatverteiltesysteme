@@ -131,7 +131,21 @@
                         var board = thisButton.parentElement;
 
                         var name = board.firstChild.textContent;
+                        for (var i = 0; i < board.childNodes.length; i++) {
+                            if(board.childNodes[i].className == "blackboardText"){
+                                board.childNodes[i].textContent = "";
+                            }
+                        }
                         clearBlackboard(name);
+                    }
+                    buttonDelete.onclick = function(){
+                        event.stopPropagation(); //-> used to not trigger blackboards on click method
+                        var thisButton = document.getElementById(this.id);
+                        var board = thisButton.parentElement;
+                        var name = board.firstChild.textContent;
+
+                        deleteBlackboard(name);
+                        board.remove();
                     }
                     buttonClose.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
