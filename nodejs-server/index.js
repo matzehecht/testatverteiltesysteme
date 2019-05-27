@@ -35,6 +35,7 @@ oasTools.initializeMiddleware(oasDoc, app, function (middleware) {
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
 
+  // Serve static files for the web frontend
   app.use(express.static('frontend'));
 
   // Start the server

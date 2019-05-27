@@ -5,12 +5,7 @@ info:
     zum Schreiben und Lesen von Nachrichten auf jenen “Blackboards bereitstellt.
   version: 1.0.0
 servers:
-- url: http://{hostname}:{port}/api
-  variables:
-    hostname:
-      default: localhost
-    port:
-      default: "8080"
+- url: /api
 tags:
 - name: blackboard
   description: Information and operations on the blackboards
