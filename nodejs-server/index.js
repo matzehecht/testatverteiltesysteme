@@ -38,9 +38,18 @@ oasTools.initializeMiddleware(oasDoc, app, function (middleware) {
   // Serve static files for the web frontend
   app.use(express.static('frontend'));
 
+  app.use(function(req, res, next) {
+    // log the request IP address
+    console.log(Date().toString() + ": " + req.method + "-Request method from IPv6 address '" + req.ip + "'");
+    next();
+  });
+
   // Start the server
   http.createServer(app).listen(serverPort, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });
+
+  // export the express app so that it can be used in test module
+  module.exports = app;
 });

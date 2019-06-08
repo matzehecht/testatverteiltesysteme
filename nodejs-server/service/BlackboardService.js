@@ -17,8 +17,10 @@ var maxBlackboards = 255;
 var maxMessage = 4096;
 
 // define inital blackboards, which will exist immediately after starting the server
-blackboards.push({"name": "Wurscht", "message": "mit Senf", "timestamp": Date.now()});
-blackboards.push({"name": "Jacke", "message": "ein relativ langer Text mit vielen Wörtern, damit viele Zeichen überschritten werden und man den Text am Ende mit Punkt Punkt Punkt abkürzen kann. Danke. Bitte.", "timestamp": Date.now()});
+blackboards.push({"name": "Blackboard 1", "message": "Erstes initiales Blackboard", "timestamp": Date.now()});
+blackboards.push({"name": "Blackboard 2", "message": "Zweites initiales Blackboard", "timestamp": Date.now()});
+
+exports.blackboards = blackboards;
 
 /**
  * create a new blackboard
