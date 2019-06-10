@@ -6,7 +6,17 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node index.js",
-    "test": "mocha --recursive"
+    "test": "mocha ./test/Blackboard.js --exit",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "**/*.js"
+    ],
+    "exclude": [
+      "node_modules/**"
+    ]
   },
   "license": "Unlicense",
   "private": true,
@@ -18,6 +28,7 @@
     "express": "^4.16.4",
     "js-yaml": "^3.3.0",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "oas-tools": "^2.1.4",
     "randomstring": "^1.1.5",
     "should": "^13.2.3",
