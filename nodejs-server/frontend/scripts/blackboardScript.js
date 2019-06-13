@@ -80,11 +80,6 @@
 			if (xhr.status == 200) {
 				// call was successfull and all is good
 				console.log("Read Blackboard successfull.");
-				/*
-				console.log("ResponseText: " + xhr.responseText);
-				console.log("ResponseJSON: " + xhr.responseJSON);
-				*/
-				//console.log("textStatus: " + textStatus);
 
 				//change style of board in foreground by setting new css class
 				var board = document.getElementById(boardId);
@@ -108,9 +103,6 @@
 			}
 		}).fail(function(xhr, textStatus, e) {
 			// call failed
-			//console.log("Read Blackboard failed. Status: " + xhr.status);
-			//console.log("textStatus: " + textStatus);
-			//console.log("error: " + e);
 			if(xhr.status == 400) {
 				//Bad request
 				console.log("Wrong parameters supplied.");

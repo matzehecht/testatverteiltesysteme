@@ -18,12 +18,14 @@
     <div class="BlackboardContainer" id="BlackboardContainer">
         <script type="text/javascript">
             function listBlackboards(blackboardlist){
+                
+                //function for displaying blackboards on start of page
                 var container = document.getElementById("BlackboardContainer");
+                
+                //remove old childs
                 while(container.firstChild){
                     container.firstChild.remove();
                 }
-
-                //blackboardlist = JSON.parse(blackboardlist);
                 //Aufbau JSON
                 /*
                 Name
@@ -31,12 +33,17 @@
                 Timestamp
                 */
                 var numberBoards = 0;
+
+                //go through blackboardlist object to get number of current blackboards
                 for(var boards in blackboardlist.blackboards){
                     if(blackboardlist.blackboards.hasOwnProperty(boards)){
                         numberBoards++;
                     }
                 }
+
+                //loop til max number of boards and create individual div for each board with all information
                 for(var i = 0; i < numberBoards; i++){
+                    
                     //Create Div: Blackboard
                     var blackboard = document.createElement("div");
                     blackboard.id = "blackboards" + i;
@@ -49,7 +56,7 @@
                     //enbale change of text of message div
                     messageDiv.contentEditable = "true";                
 
-                    //get message
+                    //get message from blackboard object
                     var message = blackboardlist.blackboards[i].message;
                     var previewMessage;
 
@@ -57,10 +64,10 @@
                     if(message.length > 20){
 
                         //truncat string to shorter preview message
-                        var index = message.indexOf(' ', message.indexOf(' ') +1);
+                        var index = message.indexOf(' ', message.indexOf(' ') +1);  //look for space to truncat at a suitable place
                         var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
                         var endDots = '...';
-                        previewMessage = document.createTextNode(previewString + endDots);
+                        previewMessage = document.createTextNode(previewString + endDots); //append end dots for preview
                     } else{
                         previewMessage = document.createTextNode(message);
                     }
@@ -76,11 +83,11 @@
                     var nameNode = document.createTextNode(boardName);
                     nameDiv.appendChild(nameNode);
                     
-                    //Append Divs
+                    //Append Divs to parent div container (actual blackboard)
                     blackboard.appendChild(nameDiv);
                     blackboard.appendChild(messageDiv);
 
-                    //define on click for blackbaord
+                    //define on click for blackbaord which chnages class to bring board to foreground
                     blackboard.onclick = function(){
                         var board = document.getElementById(this.id);
                         board.setAttribute("class", "ForegroundBoard");
@@ -88,7 +95,7 @@
                         readBlackboard(name, this.id);
                     };
 
-                    //add buttons
+                    //add buttons for Saving, Closing, Deleting and CLearing
                     var buttonContainer = document.createElement("div");
                     buttonContainer.className = "buttonContainer";
 
@@ -98,22 +105,27 @@
                     var buttonDelete = document.createElement("BUTTON");
                     var buttonClose = document.createElement("BUTTON");
 
+                    //set text of buttons
                     buttonSave.innerText = "Save";
                     buttonClear.innerText = "Clear";
                     buttonDelete.innerText = "Delete";
                     buttonClose.innerText = "Close";
 
+                    //set class for buttons
                     buttonSave.className = "blackboardButton";
                     buttonClear.className = "blackboardButton";
                     buttonDelete.className = "blackboardButton";
                     buttonClose.className = "blackboardButton";
 
+                    //set id for buttons
                     buttonSave.id = blackboard.id + "saveButton";
                     buttonClear.id = blackboard.id + "clearButton";
                     buttonDelete.id = blackboard.id + "deleteButton";
                     buttonClose.id = blackboard.id + "closeButton";
 
+                    //define on click function for each button//
 
+                    //function for saving board new content and calling function which contacts server
                     buttonSave.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
@@ -121,6 +133,8 @@
                         var board = buttoncontainer.parentElement;
 
                         var name = board.firstChild.textContent;
+
+                        //loop childs in current blackboard to get text from the board
                         for (var i = 0; i < board.childNodes.length; i++) {
                             if(board.childNodes[i].className == "blackboardText"){
                                 message = board.childNodes[i].textContent;
@@ -128,6 +142,8 @@
                         }
                         updateBlackboard(name, message);
                     }
+
+                    //function for clearing the board text and calling function to contact server
                     buttonClear.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
@@ -135,6 +151,8 @@
                         var board = buttoncontainer.parentElement;
 
                         var name = board.firstChild.textContent;
+
+                        //loop childs of current board to empty text of current board
                         for (var i = 0; i < board.childNodes.length; i++) {
                             if(board.childNodes[i].className == "blackboardText"){
                                 board.childNodes[i].textContent = "";
@@ -142,6 +160,8 @@
                         }
                         clearBlackboard(name);
                     }
+
+                    //function for deleting the board and calling function to contact server
                     buttonDelete.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
@@ -152,13 +172,18 @@
                         deleteBlackboard(name);
                         board.remove();
                     }
+
+                    //function for closing the board text and change style/class back to standard
                     buttonClose.onclick = function(){
                         event.stopPropagation(); //-> used to not trigger blackboards on click method
                         var thisButton = document.getElementById(this.id);
                         var buttoncontainer = thisButton.parentElement;
                         var board = buttoncontainer.parentElement;
+
+                        //reset class to standard
                         board.setAttribute("class", "Blackboard");
                         
+                        //loop childs of current board to change change occurence back to standard style
                         for (var i = 0; i < board.childNodes.length; i++) {
                             //hide buttons
                             if (board.childNodes[i].className == "blackboardButton") {
@@ -170,13 +195,13 @@
                             if(board.childNodes[i].className == "blackboardText"){
                                 message = board.childNodes[i].textContent;
                                 
-                                //check if message is longer than 20 characters
+                                //new check if message is longer than 20 characters, if yes needs to be shorten for better displaying
                                 if(message.length > 20){
                                     //truncat string to shorter preview message
-                                    var index = message.indexOf(' ', message.indexOf(' ') +1);
+                                    var index = message.indexOf(' ', message.indexOf(' ') +1);  //look for space to truncat at a suitable place
                                     var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
                                     var endDots = '...';
-                                    board.childNodes[i].textContent = previewString + endDots;
+                                    board.childNodes[i].textContent = previewString + endDots;  //append end dots to preview
                                 } else{
                                     board.childNodes[i].textContent = message;
                                 }
@@ -194,12 +219,17 @@
                     document.getElementById("BlackboardContainer").appendChild(blackboard);
                 }
             }
+            //when ready call getBlackboards function to get data rom server handled in blackboardScript
             $(document).ready(getBlackboards(listBlackboards));
         </script>
     </div>
     <div class="Add" id="addBlackboardIcon" onclick="openForm()">
         <img src="Rotes_Plus.png" alt="Add Blackboard" width="40vh" height="40vh">
-		<script type="text/javascript">
+        <script type="text/javascript">
+        
+            /**
+            * on click function for add icon in lower rigth corner used for adding a new blackboard
+            */
 			function openForm() {
 			    document.getElementById("myForm").style.display = "block";
 			}
@@ -208,11 +238,19 @@
 			    document.getElementById("myForm").style.display = "none";
 			}
 			
+            /**
+            * function for creating new blackboard
+            */
 			function createBlackboards() {
 				var blackboardTitle = document.getElementById("title").value;
-				console.log("dies ist ein test");
+
+                //create new board with entered title
 				createBlackboard(blackboardTitle);
+
+                //after creation reload blackboards
 				getBlackboards(listBlackboards);
+
+                //block form for adding board to not be displyed
 				document.getElementById("myForm").style.display = "none";
 				document.getElementById("title").value = "";
 			}
