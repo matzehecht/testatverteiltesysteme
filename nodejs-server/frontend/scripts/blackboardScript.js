@@ -98,11 +98,12 @@ function clearBlackboard(name) {
 	updateBlackboard(name, "");
 }
 
-function readBlackboard(name, boardId) {
+function readBlackboard(name, successHandler) {
 	// function to read the content of a blackboard
 	// params:
 	// name - the id/name of the blackboard
 	// boardID - the css-id of the board in html (needed to get access to this container)
+	// successHandler - callback function to handle the successfull response with the data
 
 	$.ajax({
 		// create the ajax request
@@ -116,26 +117,13 @@ function readBlackboard(name, boardId) {
 		if (xhr.status == 200) {
 			// call was successfull and all is good
 			console.log("Read Blackboard successfull. Statuscode " + xhr.status);
-
-			//change style of board in foreground by setting new css class
-			var board = document.getElementById(boardId);
-			//loop childnodes
-			for (var i = 0; i < board.childNodes.length; i++) {
-				//change text according to received message
-				if(board.childNodes[i].className == "blackboardText"){
-					board.childNodes[i].textContent = data.message;
-				}
-				//display buttons
-				if (board.childNodes[i].className == "buttonContainer") {
-					board.childNodes[i].style.display = 'inline-flex';
-				}
-				if (board.childNodes[i].className == "blackboardButton") {
-					board.childNodes[i].style.display = 'inline-flex';
-				}        
-			}
+			// transmit the response to the callback function
+			successHandler(data);
 		} else {
 			// Status code is not default/not the specified status code
 			console.log("Read Blackboard was successfull, but with a weird status code. Statuscode " + xhr.status);
+			// transmit the response to the callback function
+			successHandler(data);
 		}
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed

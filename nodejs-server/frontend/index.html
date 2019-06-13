@@ -92,7 +92,23 @@
                         var board = document.getElementById(this.id);
                         board.setAttribute("class", "ForegroundBoard");
                         var name = board.firstChild.textContent;
-                        readBlackboard(name, this.id);
+                        readBlackboard(name, function(data) {
+                            //change style of board in foreground by setting new css class
+                            //loop childnodes
+                            for (var i = 0; i < board.childNodes.length; i++) {
+                                //change text according to received message
+                                if(board.childNodes[i].className == "blackboardText"){
+                                    board.childNodes[i].textContent = data.message;
+                                }
+                                //display buttons
+                                if (board.childNodes[i].className == "buttonContainer") {
+                                    board.childNodes[i].style.display = 'inline-flex';
+                                }
+                                if (board.childNodes[i].className == "blackboardButton") {
+                                    board.childNodes[i].style.display = 'inline-flex';
+                                }        
+                            }
+                        });
                     };
 
                     //add buttons for Saving, Closing, Deleting and CLearing
