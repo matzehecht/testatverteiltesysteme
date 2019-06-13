@@ -160,11 +160,7 @@ function getBlackboardStatus(name, successHandler, errorHandler) {
 		// create the ajax request
 		// set the API-Url with the query parameter
 		url: apiUrl + '/blackboard/' + name + '?format=status',
-		dataType: 'json'/*,
-		type: 'GET',
-		complete: function(e, xhr, settings) {
-			console.log("Get Blackboard Status. Status: " + e.status);
-		}*/
+		dataType: 'json'
 	}).done(function(data, textStatus, xhr) {
 		// callback if the request was successfull
 		// log the statuscode on the console
