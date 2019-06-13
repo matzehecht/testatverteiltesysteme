@@ -156,7 +156,15 @@
                                 message = board.childNodes[i].textContent;
                             }
                         }
-                        updateBlackboard(name, message);
+                        updateBlackboard(name, message, function() {
+                            // successHandler
+                            // do nothing
+                            //alert("update");
+                        }, function() {
+                            // errorHandler
+                            // do nothing
+                            //alert("update failed");
+                        });
                     }
 
                     //function for clearing the board text and calling function to contact server
@@ -174,7 +182,15 @@
                                 board.childNodes[i].textContent = "";
                             }
                         }
-                        clearBlackboard(name);
+                        clearBlackboard(name, function() {
+                            // successHandler
+                            // do nothing
+                            //alert("clear");
+                        }, function() {
+                            // successHandler
+                            // do nothing
+                            //alert("clear failed");
+                        });
                     }
 
                     //function for deleting the board and calling function to contact server

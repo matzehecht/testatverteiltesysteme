@@ -45,11 +45,13 @@ function createBlackboard(name) {
 	});
 }
 
-function updateBlackboard(name, message) {
+function updateBlackboard(name, message, successHandler, errorHandler) {
 	// function for update the blackboard (change the message)
 	// params:
 	// name - the identifier (name) of the blackboard
 	// message - the new message which should be stored on the blackboard
+	// successHandler - callback function to handle the successfull response
+	// errorHandler - callback function to handle the failed response
 
 	$.ajax({
 		// create the ajax request
@@ -67,9 +69,11 @@ function updateBlackboard(name, message) {
 		} else {
 			// blackboard updated, but unspecified success response from the server
 			console.log("Update Blackboard successful with unspecified status code. Statuscode " + xhr.status);
-			// log, if data is submitted
+			// log, if data is transmitted
 			console.log(data);
 		}
+		// call the callback function
+		successHandler();
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are: wrong parameter or the blackboard does not exist
@@ -84,18 +88,21 @@ function updateBlackboard(name, message) {
 			// status code not specified
 			console.log("Unkown status Statuscode " + xhr.status);
 		}
+		errorHandler();
 	});
 }
 
-function clearBlackboard(name) {
+function clearBlackboard(name, successHandler, errorHandler) {
 	// function to clear the content (message) of an blackboard
 	// params:
 	// name - the name of the blackboard
+	// successHandler - callback function to handle the successfull response
+	// errorHandler - callback function to handle the failed response
 
 	// this function links to function "updateBlackboard()" but with empty content
 	// Thereby, an additional function is not needed and with updating with an empty message,
 	// the content is cleared of the blackboard
-	updateBlackboard(name, "");
+	updateBlackboard(name, "", successHandler, errorHandler);
 }
 
 function readBlackboard(name, successHandler) {
