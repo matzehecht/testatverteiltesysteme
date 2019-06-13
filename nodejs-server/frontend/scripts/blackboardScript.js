@@ -201,23 +201,32 @@ function getBlackboardStatus(name, handler) {
 }
 
 function getBlackboards(handler) {
+	// function to get all blackboards (and its content)
+	// params:
+	// handler - callback function to handle the response with the data (blackboards)
+
 	$.ajax({
 		url: apiUrl + '/blackboard',
 		dataType: 'json',
 		type: 'GET'
 	}).done(function(data, textStatus, xhr) {
+		// callback if the request was successfull
+		// log the statuscode on the console
+		// in data is the response from the server
 		if(xhr.status == 200) {
 			// all good
-			console.log("Get Blackboards was successful.");
+			console.log("Get Blackboards was successful. Statuscode " + xhr.status);
 			handler(data);
 		} else {
 			// unknown response code
-			console.log("Get Blackboards was successful but with unspecified status code.");
+			console.log("Get Blackboards was successful but with unspecified status code. Statuscode " + xhr.status);
 			console.log(xhr.status);
 		}
 	}).fail(function(xhr, textStatus, e) {
-		// error
-		console.log("Get Blackboards failed.");
+		// callback if the request failed
+		// reasons are e.g. server error
+		// log the status on the console
+		console.log("Get Blackboards failed. Statuscode " + xhr.status);
 	});
 }
 
