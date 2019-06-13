@@ -289,7 +289,15 @@
 				var blackboardTitle = document.getElementById("title").value;
 
                 //create new board with entered title
-				createBlackboard(blackboardTitle);
+				createBlackboard(blackboardTitle, function() {
+                    // successHandler
+                    // do nothing
+                    //alert("Blackboard erstellt");
+                }, function() {
+                    // errorHandler
+                    // do nothing
+                    //alert("Blackboard erstellen failed");
+                });
 
                 //after creation reload blackboards
 				getBlackboards(listBlackboards);

@@ -1,10 +1,12 @@
 // define the API-Url
 var apiUrl = "http://localhost:8080/api"
 
-function createBlackboard(name) {
+function createBlackboard(name, successHandler, errorHandler) {
 	// function for creating a blackboard
 	// params:
 	// name - the (unique) name of the blackboard
+	// successHandler - callback function to handle the successfull response
+	// errorHandler - callback function to handle the failed response
 
 	$.ajax({
 		// create the ajax request
@@ -22,6 +24,8 @@ function createBlackboard(name) {
 			// blackboard created successfully, but with unspecified response code
 			console.log("Blackboard created successfully, but with unspecified response code. Statuscode " + xhr.status);
 		}
+		// call the callback function for a successfull response
+		successHandler();
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are: wrong parameter, the blackboard already exists, insufficient storage on the server
@@ -42,6 +46,8 @@ function createBlackboard(name) {
 			console.log(textStatus);
 			console.log(e);
 		}
+		// call the callback function for a failed response
+		errorHandler();
 	});
 }
 
