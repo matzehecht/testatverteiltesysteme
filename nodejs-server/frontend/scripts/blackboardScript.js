@@ -206,6 +206,7 @@ function getBlackboards(handler) {
 	// handler - callback function to handle the response with the data (blackboards)
 
 	$.ajax({
+		// create the ajax request
 		url: apiUrl + '/blackboard',
 		dataType: 'json',
 		type: 'GET'
@@ -231,26 +232,35 @@ function getBlackboards(handler) {
 }
 
 function deleteBlackboard(name) {
+	// function to delete a blackboard
+	// params:
+	// name - the id/name of the blackboard which should be deleted
+
 	$.ajax({
+		// create the ajax request
 		url: apiUrl + '/blackboard/' + name,
 		dataType: 'json',
 		type: 'DELETE'
 	}).done(function(data, textStatus, xhr) {
-		//alert("Blackboard " + name + " gelöscht");
+		// callback if the request was successfull
+		// log the statuscode on the console
 		if(xhr.status == 204) {
 			// perfect deleted
-			console.log("Delete was successful.");
+			console.log("Delete was successful. Statuscode " + xhr.status);
 		} else {
 			// unspecified status code
-			console.log("Delete was successfull, but with unspecified response status code.");
+			console.log("Delete was successfull, but with unspecified response status code. Statuscode " + xhr.status);
 		}
 	}).fail(function(xhr, textStatus, e) {
+		// callback if the request failed
+		// reasons are: blackboard does not exist
+		// log the status on the console
 		if(xhr.status == 404) {
 			// Not found
-			console.log("Delete failed. No exisiting blackboard name supplied.");
+			console.log("Delete failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
 		} else {
 			// unknown error
-			console.log("Delete failed.");
+			console.log("Delete failed. Statuscode " + xhr.status);
 		}
 	});
 }
