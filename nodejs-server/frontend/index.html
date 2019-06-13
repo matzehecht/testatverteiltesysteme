@@ -93,6 +93,7 @@
                         board.setAttribute("class", "ForegroundBoard");
                         var name = board.firstChild.textContent;
                         readBlackboard(name, function(data) {
+                            // successHandler
                             //change style of board in foreground by setting new css class
                             //loop childnodes
                             for (var i = 0; i < board.childNodes.length; i++) {
@@ -108,6 +109,9 @@
                                     board.childNodes[i].style.display = 'inline-flex';
                                 }        
                             }
+                        }, function() {
+                            // errorHandler
+                            // do nothing
                         });
                     };
 

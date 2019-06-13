@@ -105,12 +105,13 @@ function clearBlackboard(name, successHandler, errorHandler) {
 	updateBlackboard(name, "", successHandler, errorHandler);
 }
 
-function readBlackboard(name, successHandler) {
+function readBlackboard(name, successHandler, errorHandler) {
 	// function to read the content of a blackboard
 	// params:
 	// name - the id/name of the blackboard
 	// boardID - the css-id of the board in html (needed to get access to this container)
 	// successHandler - callback function to handle the successfull response with the data
+	// errorHandler - callback function to handle the failed response
 
 	$.ajax({
 		// create the ajax request
@@ -124,14 +125,12 @@ function readBlackboard(name, successHandler) {
 		if (xhr.status == 200) {
 			// call was successfull and all is good
 			console.log("Read Blackboard successfull. Statuscode " + xhr.status);
-			// transmit the response to the callback function
-			successHandler(data);
 		} else {
 			// Status code is not default/not the specified status code
 			console.log("Read Blackboard was successfull, but with a weird status code. Statuscode " + xhr.status);
-			// transmit the response to the callback function
-			successHandler(data);
 		}
+		// transmit the response to the callback function
+		successHandler(data);
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are: wrong parameter or the blackboard does not exist
@@ -146,14 +145,16 @@ function readBlackboard(name, successHandler) {
 			// unknown error
 			console.log("Unknown error. Statuscode " + xhr.status);
 		}
+		errorHandler();
 	});
 }
 
-function getBlackboardStatus(name, successHandler) {
+function getBlackboardStatus(name, successHandler, errorHandler) {
 	// function to read the status of a blackboard
 	// params:
 	// name - the id/name of the blackboard
 	// successHandler - callback function to handle the response with the data
+	// errorHandler - callback function to handle the failed response
 
 	$.ajax({
 		// create the ajax request
@@ -171,13 +172,12 @@ function getBlackboardStatus(name, successHandler) {
 		if(xhr.status == 200) {
 			// Successful
 			console.log("Read Blackboard status successfull. Statuscode " + xhr.status);
-			// transmit the response to the callback function
-			successHandler(data);
 		} else {
 			// Status code is not default/not the specified status code
 			console.log("Read Blackboard status was successfull, but with a weird status code. Statuscode " + xhr.status);
-			successHandler(data);
 		}
+		// transmit the response to the callback function
+		successHandler(data);
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are: wrong parameter or the blackboard does not exist
@@ -192,6 +192,7 @@ function getBlackboardStatus(name, successHandler) {
 			// unknown error
 			console.log("Unknown error. Statuscode " + xhr.status);
 		}
+		errorHandler();
 	});
 }
 
