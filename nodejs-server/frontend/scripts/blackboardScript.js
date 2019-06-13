@@ -231,10 +231,11 @@ function getBlackboards(handler) {
 	});
 }
 
-function deleteBlackboard(name) {
+function deleteBlackboard(name, successHandler) {
 	// function to delete a blackboard
 	// params:
 	// name - the id/name of the blackboard which should be deleted
+	// successHandler - callback function which is called if the removal was successful
 
 	$.ajax({
 		// create the ajax request
@@ -247,9 +248,13 @@ function deleteBlackboard(name) {
 		if(xhr.status == 204) {
 			// perfect deleted
 			console.log("Delete was successful. Statuscode " + xhr.status);
+			// call the handler to remove the board from the UI
+			successHandler();
 		} else {
 			// unspecified status code
 			console.log("Delete was successfull, but with unspecified response status code. Statuscode " + xhr.status);
+			// call the handler to remove the board from the UI
+			successHandler();
 		}
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed

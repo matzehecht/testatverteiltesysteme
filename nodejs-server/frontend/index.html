@@ -169,8 +169,9 @@
                         var board = buttoncontainer.parentElement;
                         var name = board.firstChild.textContent;
 
-                        deleteBlackboard(name);
-                        board.remove();
+                        deleteBlackboard(name, function() {
+                            board.remove();
+                        });
                     }
 
                     //function for closing the board text and change style/class back to standard
