@@ -154,11 +154,11 @@ function readBlackboard(name, boardId) {
 	});
 }
 
-function getBlackboardStatus(name, handler) {
+function getBlackboardStatus(name, successHandler) {
 	// function to read the status of a blackboard
 	// params:
 	// name - the id/name of the blackboard
-	// handler - callback function to handle the response with the data
+	// successHandler - callback function to handle the response with the data
 
 	$.ajax({
 		// create the ajax request
@@ -177,11 +177,11 @@ function getBlackboardStatus(name, handler) {
 			// Successful
 			console.log("Read Blackboard status successfull. Statuscode " + xhr.status);
 			// transmit the response to the callback function
-			handler(data);
+			successHandler(data);
 		} else {
 			// Status code is not default/not the specified status code
 			console.log("Read Blackboard status was successfull, but with a weird status code. Statuscode " + xhr.status);
-			handler(data);
+			successHandler(data);
 		}
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
@@ -200,10 +200,10 @@ function getBlackboardStatus(name, handler) {
 	});
 }
 
-function getBlackboards(handler) {
+function getBlackboards(successHandler) {
 	// function to get all blackboards (and its content)
 	// params:
-	// handler - callback function to handle the response with the data (blackboards)
+	// successHandler - callback function to handle the response with the data (blackboards)
 
 	$.ajax({
 		// create the ajax request
@@ -217,7 +217,7 @@ function getBlackboards(handler) {
 		if(xhr.status == 200) {
 			// all good
 			console.log("Get Blackboards was successful. Statuscode " + xhr.status);
-			handler(data);
+			successHandler(data);
 		} else {
 			// unknown response code
 			console.log("Get Blackboards was successful but with unspecified status code. Statuscode " + xhr.status);
