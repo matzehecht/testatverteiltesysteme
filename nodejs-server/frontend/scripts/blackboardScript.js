@@ -155,29 +155,47 @@ function readBlackboard(name, boardId) {
 }
 
 function getBlackboardStatus(name, handler) {
+	// function to read the status of a blackboard
+	// params:
+	// name - the id/name of the blackboard
+	// handler - callback function to handle the response with the data
+
 	$.ajax({
+		// create the ajax request
+		// set the API-Url with the query parameter
 		url: apiUrl + '/blackboard/' + name + '?format=status',
-		dataType: 'json',
+		dataType: 'json'/*,
 		type: 'GET',
 		complete: function(e, xhr, settings) {
 			console.log("Get Blackboard Status. Status: " + e.status);
-		}
+		}*/
 	}).done(function(data, textStatus, xhr) {
+		// callback if the request was successfull
+		// log the statuscode on the console
+		// in data is the response from the server
 		if(xhr.status == 200) {
 			// Successful
-			console.log("Read Blackboard status successfull.");
+			console.log("Read Blackboard status successfull. Statuscode " + xhr.status);
+			// transmit the response to the callback function
+			handler(data);
+		} else {
+			// Status code is not default/not the specified status code
+			console.log("Read Blackboard status was successfull, but with a weird status code. Statuscode " + xhr.status);
 			handler(data);
 		}
 	}).fail(function(xhr, textStatus, e) {
+		// callback if the request failed
+		// reasons are: wrong parameter or the blackboard does not exist
+		// log the status on the console
 		if(xhr.status == 400) {
 			//Bad request
-			console.log("Wrong parameters supplied.");
+			console.log("Wrong parameters supplied. Statuscode " + xhr.status);
 		} else if(xhr.status == 404) {
 			// Not found
-			console.log("No exisiting blackboard name supplied.");
+			console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
 		} else {
 			// unknown error
-			console.log("Unknown error");
+			console.log("Unknown error. Statuscode " + xhr.status);
 		}
 	});
 }
