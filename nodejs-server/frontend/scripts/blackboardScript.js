@@ -192,10 +192,11 @@ function getBlackboardStatus(name, successHandler, errorHandler) {
 	});
 }
 
-function getBlackboards(successHandler) {
+function getBlackboards(successHandler, errorHandler) {
 	// function to get all blackboards (and its content)
 	// params:
 	// successHandler - callback function to handle the response with the data (blackboards)
+	// errorHandler - callback function to handle the failed response
 
 	$.ajax({
 		// create the ajax request
@@ -209,25 +210,26 @@ function getBlackboards(successHandler) {
 		if(xhr.status == 200) {
 			// all good
 			console.log("Get Blackboards was successful. Statuscode " + xhr.status);
-			successHandler(data);
 		} else {
 			// unknown response code
 			console.log("Get Blackboards was successful but with unspecified status code. Statuscode " + xhr.status);
-			console.log(xhr.status);
 		}
+		successHandler(data);
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are e.g. server error
 		// log the status on the console
 		console.log("Get Blackboards failed. Statuscode " + xhr.status);
+		errorHandler();
 	});
 }
 
-function deleteBlackboard(name, successHandler) {
+function deleteBlackboard(name, successHandler, errorHandler) {
 	// function to delete a blackboard
 	// params:
 	// name - the id/name of the blackboard which should be deleted
 	// successHandler - callback function which is called if the removal was successful
+	// errorHandler - callback function to handle the failed response
 
 	$.ajax({
 		// create the ajax request
@@ -240,14 +242,12 @@ function deleteBlackboard(name, successHandler) {
 		if(xhr.status == 204) {
 			// perfect deleted
 			console.log("Delete was successful. Statuscode " + xhr.status);
-			// call the handler to remove the board from the UI
-			successHandler();
 		} else {
 			// unspecified status code
 			console.log("Delete was successfull, but with unspecified response status code. Statuscode " + xhr.status);
-			// call the handler to remove the board from the UI
-			successHandler();
 		}
+		// call the handler to remove the board from the UI
+		successHandler();
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are: blackboard does not exist
@@ -259,5 +259,6 @@ function deleteBlackboard(name, successHandler) {
 			// unknown error
 			console.log("Delete failed. Statuscode " + xhr.status);
 		}
+		errorHandler();
 	});
 }

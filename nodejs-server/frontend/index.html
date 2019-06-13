@@ -206,7 +206,11 @@
                         var name = board.firstChild.textContent;
 
                         deleteBlackboard(name, function() {
+                            // successHandler
                             board.remove();
+                        }, function() {
+                            // errorHandler
+                            // do nothing
                         });
                     }
 
@@ -257,7 +261,10 @@
                 }
             }
             //when ready call getBlackboards function to get data rom server handled in blackboardScript
-            $(document).ready(getBlackboards(listBlackboards));
+            $(document).ready(getBlackboards(listBlackboards, function() {
+                // errorHandler
+                // do nothing
+            }));
         </script>
     </div>
     <div class="Add" id="addBlackboardIcon" onclick="openForm()">
