@@ -2,10 +2,6 @@
 // the corresponding response code, the codemessage and the JSON payload if necessary
 
 exports.writeJson = function(response, code, codemessage, payload) {
-    // if no response code given, default to 200
-    if(!code) {
-        code = 200;
-    }
     if(typeof payload === 'object') {
         payload = JSON.stringify(payload, null, 2);
     }

@@ -15,7 +15,9 @@
       "**/*.js"
     ],
     "exclude": [
-      "node_modules/**"
+      "node_modules/**",
+      "frontend/**",
+      "coverage/**"
     ]
   },
   "license": "Unlicense",
