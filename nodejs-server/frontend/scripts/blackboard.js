@@ -201,6 +201,7 @@ function listBlackboards(blackboardlist){
             var thisButton = document.getElementById(this.id);
             var buttoncontainer = thisButton.parentElement;
             var board = buttoncontainer.parentElement;
+            var name = board.firstChild.textContent;
 
             //reset class to standard
             board.setAttribute("class", "Blackboard");
@@ -215,6 +216,7 @@ function listBlackboards(blackboardlist){
                     board.childNodes[i].style.display = 'none';
                 }
                 if(board.childNodes[i].className == "blackboardText"){
+                    // reset message
                     message = board.childNodes[i].textContent;
 
                     //new check if message is longer than 20 characters, if yes needs to be shorten for better displaying
@@ -227,8 +229,33 @@ function listBlackboards(blackboardlist){
                     } else{
                         board.childNodes[i].textContent = message;
                     }
-				}
+                }
             }
+
+            // if the message was changed but not saved, set the message back to the real message
+            // for this goal, read the message from the server
+            readBlackboard(name, function(data) {
+                // successHandler
+                var message = data.message;
+
+                //check if message is longer than 20 characters
+                if(message.length > 20){
+
+                    //truncat string to shorter preview message
+                    var index = message.indexOf(' ', message.indexOf(' ') +1);  //look for space to truncat at a suitable place
+                    var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
+                    var endDots = '...';
+                    message = previewString + endDots; //append end dots for preview
+                }
+                for(var i = 0; i < board.childNodes.length; i++) {
+                    if(board.childNodes[i].className == "blackboardText") {
+                        board.childNodes[i].textContent = message;
+                    }
+                }
+            }, function() {
+                // errorHandler
+                // do nothing
+            });
         }
         //apend buttons to blackboard but deactivate them
         buttonContainer.appendChild(buttonSave);
