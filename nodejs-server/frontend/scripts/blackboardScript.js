@@ -1,5 +1,33 @@
 // define the API-Url
-var apiUrl = "http://localhost:8080/api"
+var apiUrl = "http://localhost:8080/api";
+// define maximum length of a blackboard name
+var maxBlackboardNameLength = 32;
+// define maximum length of a blackboard message
+var maxMessageLength = 4096;
+
+function checkBlackboardNameRequirements(name) {
+	// check the requirements of the blackboard name
+	// params:
+	// name - the blackboard name
+
+	if((typeof name === 'string' || name instanceof String) && name.length > 0 && name.length <= maxBlackboardNameLength) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function checkBlackboardMessageRequirements(message) {
+	// check the requirements of the blackboard message
+	// params:
+	// message - the message which should be send to the blackboard
+
+	if ((typeof message === 'string' || message instanceof String) && message.length <= maxMessageLength) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 function createBlackboard(name, successHandler, errorHandler) {
 	// function for creating a blackboard
@@ -8,47 +36,53 @@ function createBlackboard(name, successHandler, errorHandler) {
 	// successHandler - callback function to handle the successfull response
 	// errorHandler - callback function to handle the failed response
 
-	$.ajax({
-		// create the ajax request
-		// set the url for the request, the type and the dataType
-		url: apiUrl + '/blackboard/' + name,
-		type: 'PUT',
-		dataType: 'text'
-	}).done(function(data, textStatus, xhr) {
-		// callback if the request was successfull
-		// log the status on the console
-		if(xhr.status == 201) {
-			// blackboard created
-			console.log("Blackboard created. Statuscode " + xhr.status);
-		} else {
-			// blackboard created successfully, but with unspecified response code
-			console.log("Blackboard created successfully, but with unspecified response code. Statuscode " + xhr.status);
-		}
-		// call the callback function for a successfull response
-		successHandler();
-	}).fail(function(xhr, textStatus, e) {
-		// callback if the request failed
-		// reasons are: wrong parameter, the blackboard already exists, insufficient storage on the server
-		// log the status on the console
-		console.log("Create Blackboard failed.");
-		if(xhr.status == 400) {
-			// bad request
-			console.log("Wrong parameter supplied. Statuscode " + xhr.status);
-		} else if(xhr.status == 409) {
-			//Conflict
-			console.log("Blackboard already exists. Statuscode " + xhr.status);
-		} else if(xhr.status == 507) {
-			// Insufficient storage
-			console.log("Maximum number of blackboards already reached. Statuscode " + xhr.status);
-		} else {
-			// status code not specified
-			console.log("Unkown error. Statuscode " + xhr.status);
-			console.log(textStatus);
-			console.log(e);
-		}
-		// call the callback function for a failed response
-		errorHandler();
-	});
+	if(checkBlackboardNameRequirements(name)) {
+		$.ajax({
+			// create the ajax request
+			// set the url for the request, the type and the dataType
+			url: apiUrl + '/blackboard/' + name,
+			type: 'PUT',
+			dataType: 'text'
+		}).done(function(data, textStatus, xhr) {
+			// callback if the request was successfull
+			// log the status on the console
+			if(xhr.status == 201) {
+				// blackboard created
+				console.log("Blackboard created. Statuscode " + xhr.status);
+			} else {
+				// blackboard created successfully, but with unspecified response code
+				console.log("Blackboard created successfully, but with unspecified response code. Statuscode " + xhr.status);
+			}
+			// call the callback function for a successfull response
+			successHandler();
+		}).fail(function(xhr, textStatus, e) {
+			// callback if the request failed
+			// reasons are: wrong parameter, the blackboard already exists, insufficient storage on the server
+			// log the status on the console
+			console.log("Create Blackboard failed.");
+			if(xhr.status == 400) {
+				// bad request
+				console.log("Wrong parameter supplied. Statuscode " + xhr.status);
+			} else if(xhr.status == 409) {
+				//Conflict
+				console.log("Blackboard already exists. Statuscode " + xhr.status);
+			} else if(xhr.status == 507) {
+				// Insufficient storage
+				console.log("Maximum number of blackboards already reached. Statuscode " + xhr.status);
+			} else {
+				// status code not specified
+				console.log("Unkown error. Statuscode " + xhr.status);
+				console.log(textStatus);
+				console.log(e);
+			}
+			// call the callback function for a failed response
+			errorHandler();
+		});
+	} else {
+        // Blackboard name does not match with the requirements
+        errorHandler();   	
+    }
+
 }
 
 function updateBlackboard(name, message, successHandler, errorHandler) {
@@ -59,43 +93,49 @@ function updateBlackboard(name, message, successHandler, errorHandler) {
 	// successHandler - callback function to handle the successfull response
 	// errorHandler - callback function to handle the failed response
 
-	$.ajax({
-		// create the ajax request
-		// transmit the data in the "data"-object of the request and set the content type to json
-		url: apiUrl + '/blackboard/' + name,
-		data: JSON.stringify({ "message": message}),
-		type: 'PATCH',
-		contentType : 'application/json'
-	}).done(function(data, textStatus, xhr) {
-		// callback if the request was successfull
-		// log the status on the console
-		if(xhr.status == 200) {
-			// blackboard updated
-			console.log("Update Blackboard successful. Statuscode " + xhr.status);
-		} else {
-			// blackboard updated, but unspecified success response from the server
-			console.log("Update Blackboard successful with unspecified status code. Statuscode " + xhr.status);
-			// log, if data is transmitted
-			console.log(data);
-		}
-		// call the callback function
-		successHandler();
-	}).fail(function(xhr, textStatus, e) {
-		// callback if the request failed
-		// reasons are: wrong parameter or the blackboard does not exist
-		// log the status on the console
-		if(xhr.status == 400) {
-			// Bad request
-			console.log("Wrong parameter supplied. Statuscode " + xhr.status);
-		} else if(xhr.status == 404) {
-			// Not found
-			console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
-		} else {
-			// status code not specified
-			console.log("Unkown status Statuscode " + xhr.status);
-		}
-		errorHandler();
-	});
+	if(checkBlackboardNameRequirements(name) && checkBlackboardMessageRequirements(message)) {
+		$.ajax({
+			// create the ajax request
+			// transmit the data in the "data"-object of the request and set the content type to json
+			url: apiUrl + '/blackboard/' + name,
+			data: JSON.stringify({ "message": message}),
+			type: 'PATCH',
+			contentType : 'application/json'
+		}).done(function(data, textStatus, xhr) {
+			// callback if the request was successfull
+			// log the status on the console
+			if(xhr.status == 200) {
+				// blackboard updated
+				console.log("Update Blackboard successful. Statuscode " + xhr.status);
+			} else {
+				// blackboard updated, but unspecified success response from the server
+				console.log("Update Blackboard successful with unspecified status code. Statuscode " + xhr.status);
+				// log, if data is transmitted
+				console.log(data);
+			}
+			// call the callback function
+			successHandler();
+		}).fail(function(xhr, textStatus, e) {
+			// callback if the request failed
+			// reasons are: wrong parameter or the blackboard does not exist
+			// log the status on the console
+			if(xhr.status == 400) {
+				// Bad request
+				console.log("Wrong parameter supplied. Statuscode " + xhr.status);
+			} else if(xhr.status == 404) {
+				// Not found
+				console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
+			} else {
+				// status code not specified
+				console.log("Unkown status Statuscode " + xhr.status);
+			}
+			errorHandler();
+		});
+	} else {
+        // Blackboard name or message does not match with the requirements
+        errorHandler();  
+	}
+
 }
 
 function clearBlackboard(name, successHandler, errorHandler) {
@@ -119,40 +159,45 @@ function readBlackboard(name, successHandler, errorHandler) {
 	// successHandler - callback function to handle the successfull response with the data
 	// errorHandler - callback function to handle the failed response
 
-	$.ajax({
-		// create the ajax request
-		url: apiUrl + '/blackboard/' + name,
-		dataType: 'json',
-		type: 'GET'
-	}).done(function(data, textStatus, xhr) {
-		// callback if the request was successfull
-		// log the status on the console
-		// in data is the response from the server
-		if (xhr.status == 200) {
-			// call was successfull and all is good
-			console.log("Read Blackboard successfull. Statuscode " + xhr.status);
-		} else {
-			// Status code is not default/not the specified status code
-			console.log("Read Blackboard was successfull, but with a weird status code. Statuscode " + xhr.status);
-		}
-		// transmit the response to the callback function
-		successHandler(data);
-	}).fail(function(xhr, textStatus, e) {
-		// callback if the request failed
-		// reasons are: wrong parameter or the blackboard does not exist
-		// log the status on the console
-		if(xhr.status == 400) {
-			//Bad request
-			console.log("Wrong parameters supplied. Statuscode " + xhr.status);
-		} else if(xhr.status == 404) {
-			// Not found
-			console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
-		} else {
-			// unknown error
-			console.log("Unknown error. Statuscode " + xhr.status);
-		}
-		errorHandler();
-	});
+	if(checkBlackboardNameRequirements(name)) {
+		$.ajax({
+			// create the ajax request
+			url: apiUrl + '/blackboard/' + name,
+			dataType: 'json',
+			type: 'GET'
+		}).done(function(data, textStatus, xhr) {
+			// callback if the request was successfull
+			// log the status on the console
+			// in data is the response from the server
+			if (xhr.status == 200) {
+				// call was successfull and all is good
+				console.log("Read Blackboard successfull. Statuscode " + xhr.status);
+			} else {
+				// Status code is not default/not the specified status code
+				console.log("Read Blackboard was successfull, but with a weird status code. Statuscode " + xhr.status);
+			}
+			// transmit the response to the callback function
+			successHandler(data);
+		}).fail(function(xhr, textStatus, e) {
+			// callback if the request failed
+			// reasons are: wrong parameter or the blackboard does not exist
+			// log the status on the console
+			if(xhr.status == 400) {
+				//Bad request
+				console.log("Wrong parameters supplied. Statuscode " + xhr.status);
+			} else if(xhr.status == 404) {
+				// Not found
+				console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
+			} else {
+				// unknown error
+				console.log("Unknown error. Statuscode " + xhr.status);
+			}
+			errorHandler();
+		});		
+	} else {
+        // Blackboard name does not match with the requirements
+        errorHandler();  
+	}
 }
 
 function getBlackboardStatus(name, successHandler, errorHandler) {
@@ -162,40 +207,46 @@ function getBlackboardStatus(name, successHandler, errorHandler) {
 	// successHandler - callback function to handle the response with the data
 	// errorHandler - callback function to handle the failed response
 
-	$.ajax({
-		// create the ajax request
-		// set the API-Url with the query parameter
-		url: apiUrl + '/blackboard/' + name + '?format=status',
-		dataType: 'json'
-	}).done(function(data, textStatus, xhr) {
-		// callback if the request was successfull
-		// log the statuscode on the console
-		// in data is the response from the server
-		if(xhr.status == 200) {
-			// Successful
-			console.log("Read Blackboard status successfull. Statuscode " + xhr.status);
-		} else {
-			// Status code is not default/not the specified status code
-			console.log("Read Blackboard status was successfull, but with a weird status code. Statuscode " + xhr.status);
-		}
-		// transmit the response to the callback function
-		successHandler(data);
-	}).fail(function(xhr, textStatus, e) {
-		// callback if the request failed
-		// reasons are: wrong parameter or the blackboard does not exist
-		// log the status on the console
-		if(xhr.status == 400) {
-			//Bad request
-			console.log("Wrong parameters supplied. Statuscode " + xhr.status);
-		} else if(xhr.status == 404) {
-			// Not found
-			console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
-		} else {
-			// unknown error
-			console.log("Unknown error. Statuscode " + xhr.status);
-		}
-		errorHandler();
-	});
+	if(checkBlackboardNameRequirements(name)) {
+		$.ajax({
+			// create the ajax request
+			// set the API-Url with the query parameter
+			url: apiUrl + '/blackboard/' + name + '?format=status',
+			dataType: 'json'
+		}).done(function(data, textStatus, xhr) {
+			// callback if the request was successfull
+			// log the statuscode on the console
+			// in data is the response from the server
+			if(xhr.status == 200) {
+				// Successful
+				console.log("Read Blackboard status successfull. Statuscode " + xhr.status);
+			} else {
+				// Status code is not default/not the specified status code
+				console.log("Read Blackboard status was successfull, but with a weird status code. Statuscode " + xhr.status);
+			}
+			// transmit the response to the callback function
+			successHandler(data);
+		}).fail(function(xhr, textStatus, e) {
+			// callback if the request failed
+			// reasons are: wrong parameter or the blackboard does not exist
+			// log the status on the console
+			if(xhr.status == 400) {
+				//Bad request
+				console.log("Wrong parameters supplied. Statuscode " + xhr.status);
+			} else if(xhr.status == 404) {
+				// Not found
+				console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
+			} else {
+				// unknown error
+				console.log("Unknown error. Statuscode " + xhr.status);
+			}
+			errorHandler();
+		});	
+	} else {
+        // Blackboard name does not match with the requirements
+        errorHandler();  
+	}
+
 }
 
 function getBlackboards(successHandler, errorHandler) {
@@ -237,34 +288,40 @@ function deleteBlackboard(name, successHandler, errorHandler) {
 	// successHandler - callback function which is called if the removal was successful
 	// errorHandler - callback function to handle the failed response
 
-	$.ajax({
-		// create the ajax request
-		url: apiUrl + '/blackboard/' + name,
-		dataType: 'json',
-		type: 'DELETE'
-	}).done(function(data, textStatus, xhr) {
-		// callback if the request was successfull
-		// log the statuscode on the console
-		if(xhr.status == 204) {
-			// perfect deleted
-			console.log("Delete was successful. Statuscode " + xhr.status);
-		} else {
-			// unspecified status code
-			console.log("Delete was successfull, but with unspecified response status code. Statuscode " + xhr.status);
-		}
-		// call the handler to remove the board from the UI
-		successHandler();
-	}).fail(function(xhr, textStatus, e) {
-		// callback if the request failed
-		// reasons are: blackboard does not exist
-		// log the status on the console
-		if(xhr.status == 404) {
-			// Not found
-			console.log("Delete failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
-		} else {
-			// unknown error
-			console.log("Delete failed. Statuscode " + xhr.status);
-		}
-		errorHandler();
-	});
+	if(checkBlackboardNameRequirements(name)) {
+		$.ajax({
+			// create the ajax request
+			url: apiUrl + '/blackboard/' + name,
+			dataType: 'json',
+			type: 'DELETE'
+		}).done(function(data, textStatus, xhr) {
+			// callback if the request was successfull
+			// log the statuscode on the console
+			if(xhr.status == 204) {
+				// perfect deleted
+				console.log("Delete was successful. Statuscode " + xhr.status);
+			} else {
+				// unspecified status code
+				console.log("Delete was successfull, but with unspecified response status code. Statuscode " + xhr.status);
+			}
+			// call the handler to remove the board from the UI
+			successHandler();
+		}).fail(function(xhr, textStatus, e) {
+			// callback if the request failed
+			// reasons are: blackboard does not exist
+			// log the status on the console
+			if(xhr.status == 404) {
+				// Not found
+				console.log("Delete failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
+			} else {
+				// unknown error
+				console.log("Delete failed. Statuscode " + xhr.status);
+			}
+			errorHandler();
+		});		
+	} else {
+        // Blackboard name does not match with the requirements
+        errorHandler();  
+	}
+
 }
