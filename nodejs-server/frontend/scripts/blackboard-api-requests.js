@@ -54,33 +54,38 @@ function createBlackboard(name, successHandler, errorHandler) {
 				console.log("Blackboard created successfully, but with unspecified response code. Statuscode " + xhr.status);
 			}
 			// call the callback function for a successfull response
-			successHandler();
+			successHandler("Blackboard created");
 		}).fail(function(xhr, textStatus, e) {
 			// callback if the request failed
 			// reasons are: wrong parameter, the blackboard already exists, insufficient storage on the server
 			// log the status on the console
 			console.log("Create Blackboard failed.");
+			var errormessage = "";
 			if(xhr.status == 400) {
 				// bad request
-				console.log("Wrong parameter supplied. Statuscode " + xhr.status);
+				console.log("Create Blackboard failed. Wrong parameter supplied. Statuscode " + xhr.status);
+				errormessage = "Wrong parameter supplied.";
 			} else if(xhr.status == 409) {
 				//Conflict
-				console.log("Blackboard already exists. Statuscode " + xhr.status);
+				console.log("Create Blackboard failed. Blackboard already exists. Statuscode " + xhr.status);
+				errormessage = "Blackboard already exists.";
 			} else if(xhr.status == 507) {
 				// Insufficient storage
-				console.log("Maximum number of blackboards already reached. Statuscode " + xhr.status);
+				console.log("Create Blackboard failed. Maximum number of blackboards already reached. Statuscode " + xhr.status);
+				errormessage = "Maximum number of blackboards already reached.";
 			} else {
 				// status code not specified
-				console.log("Unkown error. Statuscode " + xhr.status);
+				console.log("Create Blackboard failed. Unkown error. Statuscode " + xhr.status);
 				console.log(textStatus);
 				console.log(e);
+				errormessage = "Unkown error.";
 			}
 			// call the callback function for a failed response
-			errorHandler();
+			errorHandler("Could not create Blackboard. " + errormessage);
 		});
 	} else {
         // Blackboard name does not match with the requirements
-        errorHandler();   	
+        errorHandler("This is not a valid Blackboard name.");   	
     }
 
 }
@@ -114,26 +119,30 @@ function updateBlackboard(name, message, successHandler, errorHandler) {
 				console.log(data);
 			}
 			// call the callback function
-			successHandler();
+			successHandler("Blackboard message updated");
 		}).fail(function(xhr, textStatus, e) {
 			// callback if the request failed
 			// reasons are: wrong parameter or the blackboard does not exist
 			// log the status on the console
+			var errormessage = "";
 			if(xhr.status == 400) {
 				// Bad request
-				console.log("Wrong parameter supplied. Statuscode " + xhr.status);
+				console.log("Update Blackboard failed. Wrong parameter supplied. Statuscode " + xhr.status);
+				var errormessage = "Wrong parameter supplied.";
 			} else if(xhr.status == 404) {
 				// Not found
-				console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				console.log("Update Blackboard failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				var errormessage = "No exisiting blackboard name supplied.";
 			} else {
 				// status code not specified
-				console.log("Unkown status Statuscode " + xhr.status);
+				console.log("Update Blackboard failed. Unkown status. Statuscode " + xhr.status);
+				var errormessage = "Unknown error.";
 			}
-			errorHandler();
+			errorHandler("Could not update Blackboard. " + errormessage);
 		});
 	} else {
         // Blackboard name or message does not match with the requirements
-        errorHandler();  
+        errorHandler("Can\'t update Blackboard. This is not a valid Blackboard name.");  
 	}
 
 }
@@ -177,26 +186,30 @@ function readBlackboard(name, successHandler, errorHandler) {
 				console.log("Read Blackboard was successfull, but with a weird status code. Statuscode " + xhr.status);
 			}
 			// transmit the response to the callback function
-			successHandler(data);
+			successHandler(data, "Read Blackboard successfully.");
 		}).fail(function(xhr, textStatus, e) {
 			// callback if the request failed
 			// reasons are: wrong parameter or the blackboard does not exist
 			// log the status on the console
+			var errormessage = "";
 			if(xhr.status == 400) {
 				//Bad request
-				console.log("Wrong parameters supplied. Statuscode " + xhr.status);
+				console.log("Read Blackboard failed. Wrong parameters supplied. Statuscode " + xhr.status);
+				var errormessage = "Wrong parameters supplied.";
 			} else if(xhr.status == 404) {
 				// Not found
-				console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				console.log("Read Blackboard failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				var errormessage = "No exisiting blackboard name supplied.";
 			} else {
 				// unknown error
-				console.log("Unknown error. Statuscode " + xhr.status);
+				console.log("Read Blackboard failed. Unknown error. Statuscode " + xhr.status);
+				var errormessage = "Unknown error.";
 			}
-			errorHandler();
+			errorHandler("Could not read Blackboard. " + errormessage);
 		});		
 	} else {
         // Blackboard name does not match with the requirements
-        errorHandler();  
+        errorHandler("Can\'t update Blackboard. This is not a valid Blackboard name.");  
 	}
 }
 
@@ -225,26 +238,30 @@ function getBlackboardStatus(name, successHandler, errorHandler) {
 				console.log("Read Blackboard status was successfull, but with a weird status code. Statuscode " + xhr.status);
 			}
 			// transmit the response to the callback function
-			successHandler(data);
+			successHandler(data, "Read Blackboard status successfully");
 		}).fail(function(xhr, textStatus, e) {
 			// callback if the request failed
 			// reasons are: wrong parameter or the blackboard does not exist
 			// log the status on the console
+			var errormessage = "";
 			if(xhr.status == 400) {
 				//Bad request
-				console.log("Wrong parameters supplied. Statuscode " + xhr.status);
+				console.log("Read status failed. Wrong parameters supplied. Statuscode " + xhr.status);
+				errormessage = "Wrong parameters supplied.";
 			} else if(xhr.status == 404) {
 				// Not found
-				console.log("No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				console.log("Read status failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				errormessage = "No exisiting blackboard name supplied.";
 			} else {
 				// unknown error
-				console.log("Unknown error. Statuscode " + xhr.status);
+				console.log("Read status failed. Unknown error. Statuscode " + xhr.status);
+				errormessage = "Unknown error.";
 			}
-			errorHandler();
+			errorHandler("Could not read Blackboard status. " + errormessage);
 		});	
 	} else {
         // Blackboard name does not match with the requirements
-        errorHandler();  
+        errorHandler("Can\'t update Blackboard. This is not a valid Blackboard name.");
 	}
 
 }
@@ -271,13 +288,13 @@ function getBlackboards(successHandler, errorHandler) {
 			// unknown response code
 			console.log("Get Blackboards was successful but with unspecified status code. Statuscode " + xhr.status);
 		}
-		successHandler(data);
+		successHandler(data, "Get Blackboards successfully.");
 	}).fail(function(xhr, textStatus, e) {
 		// callback if the request failed
 		// reasons are e.g. server error
 		// log the status on the console
 		console.log("Get Blackboards failed. Statuscode " + xhr.status);
-		errorHandler();
+		errorHandler("Get Blackboards failed.");
 	});
 }
 
@@ -305,23 +322,26 @@ function deleteBlackboard(name, successHandler, errorHandler) {
 				console.log("Delete was successfull, but with unspecified response status code. Statuscode " + xhr.status);
 			}
 			// call the handler to remove the board from the UI
-			successHandler();
+			successHandler("Delete Blackboard successfully.");
 		}).fail(function(xhr, textStatus, e) {
 			// callback if the request failed
 			// reasons are: blackboard does not exist
 			// log the status on the console
+			var errormessage = "";
 			if(xhr.status == 404) {
 				// Not found
 				console.log("Delete failed. No exisiting blackboard name supplied. Statuscode " + xhr.status);
+				errormessage = "No exisiting blackboard name supplied.";
 			} else {
 				// unknown error
 				console.log("Delete failed. Statuscode " + xhr.status);
+				errormessage = "Unknown error.";
 			}
-			errorHandler();
+			errorHandler("Delete Blackboard failed. " + errormessage);
 		});		
 	} else {
         // Blackboard name does not match with the requirements
-        errorHandler();  
+        errorHandler("Can\'t delete Blackboard. This is not a valid Blackboard name."); 
 	}
 
 }
