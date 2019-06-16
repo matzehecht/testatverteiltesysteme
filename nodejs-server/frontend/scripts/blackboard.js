@@ -287,27 +287,48 @@ function createBlackboards() {
     document.getElementById("title").value = "";
 }
 
+// show success message at the "info center"
+// after a specific time, the message is automatically removed
+// params
+// string: text - the text to be displayed
 function showSuccess(text) {
+    // set delay time (ms)
     var delay = 3000;
+    // create div container
     var $info = $( "<div class='infoSuccess'></div>");
+    // set visibility: hidden --> not show this div
     $info.hide();
+    // append div to info center
     $("#infoCenter").append($info);
+    // set text
     $info.text(text);
+    // make a cool effect to display the div
     $info.fadeIn();
+    // remove the div after the specific time with a cool animation
     setTimeout(function() {
         $info.slideUp(500, $info.remove);
-        //$info.remove();
     }, delay);
 }
 
+// show error message at the "info center"
+// after a specific time, the message is automatically removed
+// params
+// string: text - the text to be displayed
 function showError(text) {
+    // set delay time (ms)
     var delay = 3000;
+    // create div container
     var $info = $( "<div class='infoError'></div>");
+    // set visibility: hidden --> not show this div
     $info.hide();
+    // append div to info center
     $("#infoCenter").append($info);
+    // set text
     $info.text(text);
+    // make a cool effect to display the div
     $info.fadeIn();
-    setTimeout(function() {
+     // remove the div after the specific time with a cool animation
+     setTimeout(function() {
         $info.slideUp(500, $info.remove);
     }, delay);
 }
