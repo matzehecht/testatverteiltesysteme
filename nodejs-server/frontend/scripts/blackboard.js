@@ -304,3 +304,28 @@ function createBlackboards() {
     document.getElementById("myForm").style.display = "none";
     document.getElementById("title").value = "";
 }
+
+function showSuccess(text) {
+    var delay = 3000;
+    var $info = $( "<div class='infoSuccess'></div>");
+    $info.hide();
+    $("#infoCenter").append($info);
+    $info.text(text);
+    $info.fadeIn();
+    setTimeout(function() {
+        $info.slideUp(500, $info.remove);
+        //$info.remove();
+    }, delay);
+}
+
+function showError(text) {
+    var delay = 3000;
+    var $info = $( "<div class='infoError'></div>");
+    $info.hide();
+    $("#infoCenter").append($info);
+    $info.text(text);
+    $info.fadeIn();
+    setTimeout(function() {
+        $info.slideUp(500, $info.remove);
+    }, delay);
+}
