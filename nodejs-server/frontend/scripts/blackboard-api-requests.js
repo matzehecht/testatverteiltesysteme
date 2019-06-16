@@ -9,7 +9,10 @@ var maxMessageLength = 4096;
 // params
 // string: name - the blackboard name
 function checkBlackboardNameRequirements(name) {
-	if((typeof name === 'string' || name instanceof String) && name.length > 0 && name.length <= maxBlackboardNameLength) {
+	var isString = (typeof name === 'string' || name instanceof String) && name.length > 0 && name.length <= maxBlackboardNameLength;
+	var badCharactersInString = name.includes("?") || name.includes("/");
+	var onlySpacesInString = !name.replace(/\s/g, '').length;
+	if(isString && !badCharactersInString && !onlySpacesInString) {
 		return true;
 	} else {
 		return false;
@@ -82,7 +85,7 @@ function createBlackboard(name, successHandler, errorHandler) {
 		});
 	} else {
         // Blackboard name does not match with the requirements
-        errorHandler("This is not a valid Blackboard name.");   	
+        errorHandler("This is not a valid Blackboard name. It is forbidden to use \"/\" and \"?\" or only  use spaces.");   	
     }
 }
 
