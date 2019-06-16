@@ -23,7 +23,6 @@
             //when ready call getBlackboards function to get data rom server handled in blackboardScript
             $(document).ready(getBlackboards(function(data, textStatus) {
                 listBlackboards(data);
-                showSuccess(textStatus);
             }, showError));
         </script>
     </div>

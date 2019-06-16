@@ -240,7 +240,8 @@ function listBlackboards(blackboardlist){
                         board.childNodes[i].textContent = message;
                     }
                 }
-                showSuccess(textStatus);
+                // don't show text message
+                //showSuccess(textStatus);
             }, showError);
         }
         //apend buttons to blackboard but deactivate them
@@ -278,7 +279,7 @@ function createBlackboards() {
     //after creation reload blackboards
     getBlackboards(function(data, textStatus) {
         listBlackboards(data);
-        showSuccess(textStatus);
+        //showSuccess(textStatus);
     }, showError);
 
     //block form for adding board to not be displyed
