@@ -5,11 +5,10 @@ var maxBlackboardNameLength = 32;
 // define maximum length of a blackboard message
 var maxMessageLength = 4096;
 
+// check the requirements of the blackboard name
+// params
+// string: name - the blackboard name
 function checkBlackboardNameRequirements(name) {
-	// check the requirements of the blackboard name
-	// params:
-	// name - the blackboard name
-
 	if((typeof name === 'string' || name instanceof String) && name.length > 0 && name.length <= maxBlackboardNameLength) {
 		return true;
 	} else {
@@ -17,11 +16,10 @@ function checkBlackboardNameRequirements(name) {
 	}
 }
 
+// check the requirements of the blackboard message
+// params
+// string: message - the message which should be send to the blackboard
 function checkBlackboardMessageRequirements(message) {
-	// check the requirements of the blackboard message
-	// params:
-	// message - the message which should be send to the blackboard
-
 	if ((typeof message === 'string' || message instanceof String) && message.length <= maxMessageLength) {
 		return true;
 	} else {
@@ -29,13 +27,12 @@ function checkBlackboardMessageRequirements(message) {
 	}
 }
 
+// function for creating a blackboard
+// params
+// string: name - the (unique) name of the blackboard
+// successHandler(string: textStatus) - callback function to handle the successfull response
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function createBlackboard(name, successHandler, errorHandler) {
-	// function for creating a blackboard
-	// params:
-	// name - the (unique) name of the blackboard
-	// successHandler - callback function to handle the successfull response
-	// errorHandler - callback function to handle the failed response
-
 	if(checkBlackboardNameRequirements(name)) {
 		$.ajax({
 			// create the ajax request
@@ -87,17 +84,15 @@ function createBlackboard(name, successHandler, errorHandler) {
         // Blackboard name does not match with the requirements
         errorHandler("This is not a valid Blackboard name.");   	
     }
-
 }
 
+// function for update the blackboard (change the message)
+// params
+// string: name - the identifier (name) of the blackboard
+// string: message - the new message which should be stored on the blackboard
+// successHandler(string: textStatus) - callback function to handle the successfull response
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function updateBlackboard(name, message, successHandler, errorHandler) {
-	// function for update the blackboard (change the message)
-	// params:
-	// name - the identifier (name) of the blackboard
-	// message - the new message which should be stored on the blackboard
-	// successHandler - callback function to handle the successfull response
-	// errorHandler - callback function to handle the failed response
-
 	if(checkBlackboardNameRequirements(name) && checkBlackboardMessageRequirements(message)) {
 		$.ajax({
 			// create the ajax request
@@ -142,32 +137,28 @@ function updateBlackboard(name, message, successHandler, errorHandler) {
 		});
 	} else {
         // Blackboard name or message does not match with the requirements
-        errorHandler("Can\'t update Blackboard. This is not a valid Blackboard name.");  
+        errorHandler("Can\'t update Blackboard. This is not a valid Blackboard name or message is to long.");  
 	}
-
 }
 
+// function to clear the content (message) of an blackboard
+// params
+// string: name - the name of the blackboard
+// successHandler(string: textStatus) - callback function to handle the successfull response
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function clearBlackboard(name, successHandler, errorHandler) {
-	// function to clear the content (message) of an blackboard
-	// params:
-	// name - the name of the blackboard
-	// successHandler - callback function to handle the successfull response
-	// errorHandler - callback function to handle the failed response
-
 	// this function links to function "updateBlackboard()" but with empty content
 	// Thereby, an additional function is not needed and with updating with an empty message,
 	// the content is cleared of the blackboard
 	updateBlackboard(name, "", successHandler, errorHandler);
 }
 
+// function to read the content of a blackboard
+// params
+// string: name - the id/name of the blackboard
+// successHandler(object: data, string: textStatus) - callback function to handle the successfull response with the data
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function readBlackboard(name, successHandler, errorHandler) {
-	// function to read the content of a blackboard
-	// params:
-	// name - the id/name of the blackboard
-	// boardID - the css-id of the board in html (needed to get access to this container)
-	// successHandler - callback function to handle the successfull response with the data
-	// errorHandler - callback function to handle the failed response
-
 	if(checkBlackboardNameRequirements(name)) {
 		$.ajax({
 			// create the ajax request
@@ -213,13 +204,12 @@ function readBlackboard(name, successHandler, errorHandler) {
 	}
 }
 
+// function to read the status of a blackboard
+// params
+// string: name - the id/name of the blackboard
+// successHandler(object: data, string: textStatus) - callback function to handle the response with the data
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function getBlackboardStatus(name, successHandler, errorHandler) {
-	// function to read the status of a blackboard
-	// params:
-	// name - the id/name of the blackboard
-	// successHandler - callback function to handle the response with the data
-	// errorHandler - callback function to handle the failed response
-
 	if(checkBlackboardNameRequirements(name)) {
 		$.ajax({
 			// create the ajax request
@@ -263,15 +253,13 @@ function getBlackboardStatus(name, successHandler, errorHandler) {
         // Blackboard name does not match with the requirements
         errorHandler("Can\'t update Blackboard. This is not a valid Blackboard name.");
 	}
-
 }
 
+// function to get all blackboards (and its content)
+// params
+// successHandler(object: data, string: textStatus) - callback function to handle the response with the data (blackboards)
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function getBlackboards(successHandler, errorHandler) {
-	// function to get all blackboards (and its content)
-	// params:
-	// successHandler - callback function to handle the response with the data (blackboards)
-	// errorHandler - callback function to handle the failed response
-
 	$.ajax({
 		// create the ajax request
 		url: apiUrl + '/blackboard',
@@ -298,13 +286,12 @@ function getBlackboards(successHandler, errorHandler) {
 	});
 }
 
+// function to delete a blackboard
+// params
+// string: name - the id/name of the blackboard which should be deleted
+// successHandler(string: textStatus) - callback function which is called if the removal was successful
+// errorHandler(string: textStatus) - callback function to handle the failed response
 function deleteBlackboard(name, successHandler, errorHandler) {
-	// function to delete a blackboard
-	// params:
-	// name - the id/name of the blackboard which should be deleted
-	// successHandler - callback function which is called if the removal was successful
-	// errorHandler - callback function to handle the failed response
-
 	if(checkBlackboardNameRequirements(name)) {
 		$.ajax({
 			// create the ajax request
@@ -343,5 +330,4 @@ function deleteBlackboard(name, successHandler, errorHandler) {
         // Blackboard name does not match with the requirements
         errorHandler("Can\'t delete Blackboard. This is not a valid Blackboard name."); 
 	}
-
 }

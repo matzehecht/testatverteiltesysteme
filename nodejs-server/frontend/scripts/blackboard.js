@@ -73,7 +73,7 @@ function listBlackboards(blackboardlist){
             var board = document.getElementById(this.id);
             board.setAttribute("class", "ForegroundBoard");
             var name = board.firstChild.textContent;
-            readBlackboard(name, function(data) {
+            readBlackboard(name, function(data, textStatus) {
                 // successHandler
                 //change style of board in foreground by setting new css class
                 //loop childnodes
@@ -90,10 +90,8 @@ function listBlackboards(blackboardlist){
                         board.childNodes[i].style.display = 'inline-flex';
                     }        
                 }
-            }, function() {
-                // errorHandler
-                // do nothing
-            });
+                showSuccess(textStatus);
+            }, showError);
         };
 
         //add buttons for Saving, Closing, Deleting and CLearing
@@ -141,15 +139,7 @@ function listBlackboards(blackboardlist){
                     message = board.childNodes[i].textContent;
                 }
             }
-            updateBlackboard(name, message, function() {
-                // successHandler
-                // do nothing
-                //alert("update");
-            }, function() {
-                // errorHandler
-                // do nothing
-                //alert("update failed");
-            });
+            updateBlackboard(name, message, showSuccess, showError);
         }
 
         //function for clearing the board text and calling function to contact server
@@ -167,14 +157,14 @@ function listBlackboards(blackboardlist){
                     board.childNodes[i].textContent = "";
                 }
             }
-            clearBlackboard(name, function() {
+            clearBlackboard(name, function(textStatus) {
                 // successHandler
-                // do nothing
-                //alert("clear");
-            }, function() {
+                // overwrite default success message
+                showSuccess("Blackboard cleared.");
+            }, function(textStatus) {
                 // successHandler
-                // do nothing
-                //alert("clear failed");
+                // overwrite default error message
+                showError("Could not clear Blackboard.");
             });
         }
 
@@ -186,13 +176,11 @@ function listBlackboards(blackboardlist){
             var board = buttoncontainer.parentElement;
             var name = board.firstChild.textContent;
 
-            deleteBlackboard(name, function() {
+            deleteBlackboard(name, function(textStatus) {
                 // successHandler
                 board.remove();
-            }, function() {
-                // errorHandler
-                // do nothing
-            });
+                showSuccess(textStatus);
+            }, showError);
         }
 
         //function for closing the board text and change style/class back to standard
@@ -234,7 +222,7 @@ function listBlackboards(blackboardlist){
 
             // if the message was changed but not saved, set the message back to the real message
             // for this goal, read the message from the server
-            readBlackboard(name, function(data) {
+            readBlackboard(name, function(data, textStatus) {
                 // successHandler
                 var message = data.message;
 
@@ -252,10 +240,8 @@ function listBlackboards(blackboardlist){
                         board.childNodes[i].textContent = message;
                     }
                 }
-            }, function() {
-                // errorHandler
-                // do nothing
-            });
+                showSuccess(textStatus);
+            }, showError);
         }
         //apend buttons to blackboard but deactivate them
         buttonContainer.appendChild(buttonSave);
@@ -287,18 +273,13 @@ function createBlackboards() {
     var blackboardTitle = document.getElementById("title").value;
 
     //create new board with entered title
-    createBlackboard(blackboardTitle, function() {
-        // successHandler
-        // do nothing
-        //alert("Blackboard erstellt");
-    }, function() {
-        // errorHandler
-        // do nothing
-        //alert("Blackboard erstellen failed");
-    });
+    createBlackboard(blackboardTitle, showSuccess, showError);
 
     //after creation reload blackboards
-    getBlackboards(listBlackboards);
+    getBlackboards(function(data, textStatus) {
+        listBlackboards(data);
+        showSuccess(textStatus);
+    }, showError);
 
     //block form for adding board to not be displyed
     document.getElementById("myForm").style.display = "none";

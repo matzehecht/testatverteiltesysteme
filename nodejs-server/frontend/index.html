@@ -21,10 +21,10 @@
     <div class="BlackboardContainer" id="BlackboardContainer">
         <script type="text/javascript">
             //when ready call getBlackboards function to get data rom server handled in blackboardScript
-            $(document).ready(getBlackboards(listBlackboards, function() {
-                // errorHandler
-                // do nothing
-            }));
+            $(document).ready(getBlackboards(function(data, textStatus) {
+                listBlackboards(data);
+                showSuccess(textStatus);
+            }, showError));
         </script>
     </div>
     <div class="Add" id="addBlackboardIcon" onclick="openForm()">
