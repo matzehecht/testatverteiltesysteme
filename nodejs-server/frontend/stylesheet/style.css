@@ -157,7 +157,7 @@ body{
 .infoSuccess {
 	background-color: #25CC31;
 	border-radius: 5px;
-	padding: 5px;
+	padding: 10px;
 	margin: 5px;
 	box-shadow: 1px 1px 5px 0px rgba(240,240,240,0.75);
 }
@@ -165,7 +165,7 @@ body{
 .infoError {
 	background-color: #D61515;
 	border-radius: 5px;
-	padding: 5px;
+	padding: 10px;
 	margin: 5px;
 	box-shadow: 1px 1px 5px 0px rgba(240,240,240,0.75);
 }
