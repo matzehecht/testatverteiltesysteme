@@ -34,7 +34,7 @@ exports.createBlackboard = function(name) {
         // Check, if the parametered blackboard name is too long, if the blackboard stack is already full and 
         // if the parametered blackboard name exists. Only store the new blackboard, if all checks were successful,
         // otherwise respond with an error.
-        if(name === "" || name.length > maxBlackboardName) {
+        if(name === "" || name.toString().length > maxBlackboardName) {
             reject({"code": 400, "codemessage": "Bad request. Wrong parameter supplied"});
         }
         else {
@@ -175,7 +175,7 @@ exports.updateBlackboard = function(body,name) {
             reject({"code": 404, "codemessage": "Not found. Not existing blackboard name supplied"});
         }
         else {
-            if(body.message.length > maxMessage) {
+            if(body.message.toString().length > maxMessage) {
                 reject({"code": 400, "codemessage": "Bad request. Wrong parameter supplied"});
             }
             else {

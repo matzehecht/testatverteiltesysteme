@@ -38,9 +38,12 @@ paths:
         style: simple
         explode: false
         schema:
-          maxLength: 32
-          minLength: 1
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 32
+              minLength: 1
+            - type: integer
+              maximum: 99999999999999999999999999999999
       - name: format
         in: query
         description: if set to 'status', return blackboard status
@@ -77,9 +80,12 @@ paths:
         style: simple
         explode: false
         schema:
-          maxLength: 32
-          minLength: 1
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 32
+              minLength: 1
+            - type: integer
+              maximum: 99999999999999999999999999999999
       responses:
         201:
           description: Blackboard created
@@ -117,9 +123,12 @@ paths:
         style: simple
         explode: false
         schema:
-          maxLength: 32
-          minLength: 1
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 32
+              minLength: 1
+            - type: integer
+              maximum: 99999999999999999999999999999999
       responses:
         204:
           description: Deleted
@@ -139,9 +148,12 @@ paths:
         style: simple
         explode: false
         schema:
-          maxLength: 32
-          minLength: 1
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 32
+              minLength: 1
+            - type: integer
+              maximum: 99999999999999999999999999999999
       requestBody:
         description: Message to be written to the blackboard
         x-name: blackboard
@@ -168,11 +180,18 @@ components:
       type: object
       properties:
         name:
-          maxLength: 32
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 32
+              minLength: 1
+            - type: integer
+              maximum: 99999999999999999999999999999999
         message:
-          maxLength: 4096
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 4096
+            - type: integer
+              maximum: 99999999999999999999999999999999
         timestamp:
           type: string
           format: date-time
@@ -180,7 +199,12 @@ components:
       type: object
       properties:
         name:
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 32
+              minLength: 1
+            - type: integer
+              maximum: 99999999999999999999999999999999
         empty:
           type: boolean
         timestamp:
@@ -197,5 +221,8 @@ components:
       type: object
       properties:
         message:
-          maxLength: 4096
-          type: string
+          oneOf: 
+            - type: string
+              maxLength: 4096
+            - type: integer
+              maximum: 99999999999999999999999999999999
