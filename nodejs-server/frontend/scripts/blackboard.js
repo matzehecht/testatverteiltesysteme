@@ -35,7 +35,7 @@ function listBlackboards(blackboardlist){
         messageDiv.className = "blackboardText";
                     
         //enbale change of text of message div
-        messageDiv.contentEditable = "true";                
+        messageDiv.contentEditable = "true";     
 
         //get message from blackboard object
         var message = blackboardlist.blackboards[i].message;
@@ -254,6 +254,15 @@ function listBlackboards(blackboardlist){
         //Blackboard Div an Container anhängen
         document.getElementById("BlackboardContainer").appendChild(blackboard);
     }
+    $('div[contenteditable]').keydown(function(e) {
+        // trap the return key being pressed
+        if (e.keyCode === 13) {
+            // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+            document.execCommand('insertHTML', false, '<br>');
+            // prevent the default behaviour of return key pressed
+            return false;
+        }
+    });
 }
 
 /**
