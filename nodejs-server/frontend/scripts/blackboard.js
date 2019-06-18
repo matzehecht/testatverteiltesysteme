@@ -90,7 +90,8 @@ function listBlackboards(blackboardlist){
                         board.childNodes[i].style.display = 'inline-flex';
                     }        
                 }
-                showSuccess(textStatus);
+                // don't show text message
+                //showSuccess(textStatus);
             }, showError);
         };
 
