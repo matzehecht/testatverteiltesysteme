@@ -80,7 +80,7 @@ function listBlackboards(blackboardlist){
                 for (var i = 0; i < board.childNodes.length; i++) {
                     //change text according to received message
                     if(board.childNodes[i].className == "blackboardText"){
-                        board.childNodes[i].textContent = data.message;
+                        board.childNodes[i].innerText = data.message;
                     }
                     //display buttons
                     if (board.childNodes[i].className == "buttonContainer") {
@@ -137,7 +137,7 @@ function listBlackboards(blackboardlist){
             //loop childs in current blackboard to get text from the board
             for (var i = 0; i < board.childNodes.length; i++) {
                 if(board.childNodes[i].className == "blackboardText"){
-                    message = board.childNodes[i].textContent;
+                    message = board.childNodes[i].innerText;
                 }
             }
             updateBlackboard(name, message, showSuccess, showError);
@@ -155,7 +155,7 @@ function listBlackboards(blackboardlist){
             //loop childs of current board to empty text of current board
             for (var i = 0; i < board.childNodes.length; i++) {
                 if(board.childNodes[i].className == "blackboardText"){
-                    board.childNodes[i].textContent = "";
+                    board.childNodes[i].innerText = "";
                 }
             }
             clearBlackboard(name, function(textStatus) {
@@ -206,7 +206,7 @@ function listBlackboards(blackboardlist){
                 }
                 if(board.childNodes[i].className == "blackboardText"){
                     // reset message
-                    message = board.childNodes[i].textContent;
+                    message = board.childNodes[i].innerText;
 
                     //new check if message is longer than 20 characters, if yes needs to be shorten for better displaying
                     if(message.length > 20){
@@ -214,9 +214,9 @@ function listBlackboards(blackboardlist){
                         var index = message.indexOf(' ', message.indexOf(' ') +1);  //look for space to truncat at a suitable place
                         var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
                         var endDots = '...';
-                        board.childNodes[i].textContent = previewString + endDots;  //append end dots to preview
+                        board.childNodes[i].innerText = previewString + endDots;  //append end dots to preview
                     } else{
-                        board.childNodes[i].textContent = message;
+                        board.childNodes[i].innerText = message;
                     }
                 }
             }
@@ -238,7 +238,7 @@ function listBlackboards(blackboardlist){
                 }
                 for(var i = 0; i < board.childNodes.length; i++) {
                     if(board.childNodes[i].className == "blackboardText") {
-                        board.childNodes[i].textContent = message;
+                        board.childNodes[i].innerText = message;
                     }
                 }
                 // don't show text message
@@ -255,11 +255,27 @@ function listBlackboards(blackboardlist){
         //Blackboard Div an Container anhängen
         document.getElementById("BlackboardContainer").appendChild(blackboard);
     }
+    //prevent adding div automatically
     $('div[contenteditable]').keydown(function(e) {
-        // trap the return key being pressed
+        // detect the return key being pressed
         if (e.keyCode === 13) {
-            // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
-            document.execCommand('insertHTML', false, '<br>');
+            var newline = "\r\n";
+            this.innerText = this.innerText.append(newline);
+            var previewMessage;
+            var message = this.innerText;
+
+            //check if message is longer than 20 characters
+            if(message.length > 20){
+
+                //truncat string to shorter preview message
+                var index = message.indexOf(' ', message.indexOf(' ') +1);  //look for space to truncat at a suitable place
+                var previewString = index >= 0 ? message.substr(0, index) : message.substr(index +1);
+                var endDots = '...';
+                previewMessage = document.createTextNode(previewString + endDots); //append end dots for preview
+            } else{
+                previewMessage = document.createTextNode(message);
+            }
+            messageDiv.appendChild(previewMessage);
             // prevent the default behaviour of return key pressed
             return false;
         }
